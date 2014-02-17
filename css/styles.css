@@ -1,0 +1,285 @@
+body {
+  margin: 0px;
+  color: white;
+    
+}
+
+table {
+    color: #002C51;
+    font-size: 13px;
+}
+.main_table {
+    border: 1px solid #EEEEEE;
+    border-collapse: collapse;
+    margin-top: 55px;
+}
+
+.main_table TH {
+    background-color: #BBB;
+    border: 1px solid #DDDDDD;    
+    padding: 5px;
+-moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;      
+}
+.main_table TD {
+    border: 1px solid #DDDDDD;
+    font-size: 12px;
+    padding: 5px 5px 5px 5px;
+}
+
+.main_table TR:nth-child(odd){
+    background-color: #EEEEEE
+}
+
+.unselectable {
+-moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;      
+}
+
+.asc {
+    background:url("../img/view-sort-descending.png") no-repeat 0 0;
+
+    height: 16px;
+    padding: 0 0 0 22px;
+    width: auto;
+}
+.desc {
+    background:url("../img/view-sort-ascending.png") no-repeat 0 0;
+
+    height: 16px;
+    padding: 0 0 0 22px;
+    width: auto;    
+}
+
+select {
+    float:right
+}
+
+
+.fleft {
+    float:left
+}
+
+.link {
+    display:none
+}
+
+.key{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.no_data{
+    font-weight: 800;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.button_3 {
+	color: #111;
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    background: #fd970b; /* Цвет фона кнопки по умолчанию */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fbb319', endColorstr='#ff8000'); /* Градиент кнопки */
+    background: -webkit-gradient(linear, left top, left bottom, from(#fbb319), to(#ff8000)); /* Градиент кнопки */
+    background: -moz-linear-gradient(top,  #fed319,  #ff8000); /* Градиент кнопки */
+    background: gradient(linear, top,  #fed319,  #ff8000); /* Градиент кнопки */
+    border: 1px solid #ff8000; /* Обводка кнопки */
+    display: inline-block;
+    font-family: arial;
+    font-size: 8pt;
+    margin: 7px;
+    padding: 2px 6px;
+    text-align: center;
+}
+
+.button_2 {
+	color: #fff;
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    background: #0bba0c; /* Цвет фона кнопки по умолчанию */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#13d10f', endColorstr='#02a009'); /* Градиент кнопки */
+    background: -webkit-gradient(linear, left top, left bottom, from(#13d10f), to(#02a009)); /* Градиент кнопки */
+    background: -moz-linear-gradient(top,  #13d10f,  #02a009); /* Градиент кнопки */
+    background: gradient(linear, top,  #13d10f,  #02a009); /* Градиент кнопки */
+    border: 1px solid #028c1f; /* Обводка кнопки */
+    display: inline-block;
+    font-family: arial;
+    font-size: 8pt;
+    margin: 7px;
+    padding: 2px 6px;
+    text-align: center;    
+}
+
+.button_1 {
+	color: #fff;
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    background: #0973bb; /* Цвет фона кнопки по умолчанию */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0f97d0', endColorstr='#0454a8'); /* Градиент кнопки */
+    background: -webkit-gradient(linear, left top, left bottom, from(#0f97d0), to(#0454a8)); /* Градиент кнопки */
+    background: -moz-linear-gradient(top,  #0f97d0,  #0454a8); /* Градиент кнопки */
+    background: gradient(linear, top,  #0f97d0,  #0454a8); /* Градиент кнопки */
+    border: 1px solid #0454a8; /* Обводка кнопки */
+    display: inline-block;
+    font-family: arial;
+    font-size: 8pt;
+    margin: 7px;
+    padding: 2px 6px;
+    text-align: center;
+}
+
+.sync_link {
+  cursor:pointer; 
+    color:blue; 
+    text-decoration:underline;
+    float: right;
+    padding-left: 5px;
+}
+
+.hide {
+  display: none;
+}
+
+.icon_search {
+  background: url("/img/search.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+  height: 16px;
+  margin: 0 0 0 3px;
+  padding: 2px 0 0 16px;
+  width: auto;  
+}
+
+.remove {
+  background: url("/img/remove.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+  height: 16px;
+  margin: 0 0 0 3px;
+  padding: 0px 0 0 16px;
+  width: auto;  
+}
+
+.data_input {
+  height: 16px;
+  margin: 0 0 0 3px;
+  padding: 2px 0 0 16px;
+  width: auto;
+  display:inline-flex;
+  float:right;
+}
+
+.date_diap {
+  float: left;
+  width: auto;
+}
+
+input {
+  font-size: 10px;
+}
+
+select {
+  font-size: 10px;
+}
+
+#loading {
+  background-color: rgba(100, 100, 100, 0.7);
+  opacity: 0.7;
+  position: absolute;
+  display: none;
+  width: 100%;
+  height: 100%;
+  text-align:center;
+  left: 0;
+  right: 0;
+  top: 0px;
+}
+
+#informer {
+  background-color: rgba(50, 50, 50, 0.7);
+  opacity: 1;
+  color: #B0FFCA;
+  position: absolute;
+  display: none;
+  width: 350px;
+  height: 65px;
+  text-align:center;
+  margin: 200px 35%;
+}
+
+#sync_form {
+    margin: 0 35%;
+    position: absolute;
+}
+
+#header {
+  top: 0px;
+  position: fixed;
+  background-color: rgba(50, 50, 50, 0.7);
+  width: 100%;
+  height: 45px;
+  padding: 5px; 
+-moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;    
+}
+
+a.header_link {
+ color:#B0FFCA; 
+  text-decoration: none; 
+ cursor:pointer;
+}
+
+a.header_link:hover {
+ color:#0080FF; 
+text-decoration: none; 
+ cursor:pointer;
+}
+
+a.header_link:active {
+ color:#CACACA; 
+text-decoration: none; 
+ cursor:pointer;
+}
+/*
+#pages {
+  position: absolute;
+  margin: 15px 35%;
+}*/
+
+#get_script_link {
+  position: absolute;
+  right: 20px;
+}
+
+.main_table td:nth-child(2) {
+  display: none;
+}
+
+.main_table th:nth-child(2) {
+  display: none;
+}
+
+/*.main_table td:nth-child(10) {
+  display: none;
+}
+
+.main_table th:nth-child(10) {
+  display: none;
+}  */
+         
+.main_table td:nth-child(11) {
+  display: none;
+}
+
+.main_table th:nth-child(11) {
+  display: none;
+}
+
+.main_table td:nth-child(12) {
+  display: none;
+}
+
+.main_table th:nth-child(12) {
+  display: none;
+}      
+
+#sync {
+  width: 80%;
+}
