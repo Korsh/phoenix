@@ -22,14 +22,14 @@
   $script_version = "0.0.1";
   
   $dc_conf = array(
-  "ph",
+  "pc",
   "lg");
   
   $admin_conf = array(
     0 => array(
-      "dc" => "ph",
+      "dc" => "pc",
       "site" => "playcougar",
-      "login_url" => ".com/admin/base/login?redirect=",
+      "login_url" => ".com/admin/base/login",
       "find_url" => ".com/admin/user/find",
       "login" => "arzhanov",
       "pass" => "CiWacMadJej9",
@@ -38,8 +38,8 @@
     1 => array(
       "dc" => "lg",
       "site" => "localsgowild",
-      "login_url" => ".com/admin/base/login?redirect=",
-      "find_url" => ".com/admin/user/find?",
+      "login_url" => ".com/admin/base/login",
+      "find_url" => ".com/admin/user/find",
       "login" => "arzhanov",
       "pass" => "AfhOkBjW",
       "type" => "phoenix"

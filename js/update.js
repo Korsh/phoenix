@@ -3,7 +3,7 @@
 
 
 (function() {
-    alert("Version: "+script_version;);
+    alert("Version: "+script_version);
     var days = "2";
       name = "Another Auto Update Script";
       version = "1.0.10";
