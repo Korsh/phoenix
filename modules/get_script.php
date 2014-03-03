@@ -1,8 +1,9 @@
-<?
+<?php
 
   require_once(INCLUDE_DIR."script_generate.inc.php");
   require_once(LIB_DIR."rfc822/rfc822.php");
-  
+  //echo '<pre>'.print_r($_REQUEST,true).'</pre>';
+
   if(isset($_GET['action']))
   {
   
@@ -13,7 +14,7 @@
       { 
         $keychar = array();
         list($account, $domain) = split('@', $_POST['mail']);
-         $options['version'] = $script_id;
+         $options['version'] = $script_version;
          $options['mail']['account'] = $account;
          $options['mail']['domain'] = $domain;
         foreach($script_generate_actions as $key => $option)
@@ -77,7 +78,8 @@
         fwrite($file_script, $script_src); 
                                                                          
         header('Location: '.($filename));
-      } 
+      }
+      //exit;
     }
     elseif($_GET['action'] == 'meta')
     {
