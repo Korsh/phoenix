@@ -1,4 +1,6 @@
-<?
+<?php
+
+$general_sitename = "phoenix";
 
 	$error_level=E_ALL ^ ~E_NOTICE ^ ~E_WARNING;
   error_reporting($error_level);

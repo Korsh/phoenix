@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.19, created on 2014-01-27 12:44:05
+<?php /* Smarty version 2.6.19, created on 2014-03-03 10:50:35
          compiled from sync.tpl */ ?>
 <div id="sync_form">
 Synchronize <span id="sync_all">user</span>:<br>

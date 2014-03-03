@@ -64,11 +64,6 @@
     </th>
     <th>
       <div class="fleft">
-        dc
-      </div>
-    </th>
-    <th>
-      <div class="fleft">
         gender:
       </div>
       <select id="gender" onChange="changeCreateria();" title="Select gender from list">
@@ -121,91 +116,25 @@
       </div>
     </th>
     <th>
-      <div class="fleft">
-        <span onClick="sortBy(event);" class="conf_time {if $smarty.get.sort_element == "conf_time"}sort {$smarty.get.sort}{/if}" title="Click on title to sort by date of confirmation">
-          confirm
-        </span>
-        <span id="conf_time_diap" class="icon_search" title="Click here to set the range of confirmation date"></span>
-                                                               
-        <div id="conf_time_diap" class="date_diap{if !$smarty.get.conf_time_ge && !$smarty.get.conf_time_l} hide{/if}">
-        <span class="data_input">>=<input type="text" id="conf_time_ge" size="8" {if $smarty.get.conf_time_ge}value="{$smarty.get.conf_time_ge}"{/if}></span>
-        <span class="data_input"><<input type="text" id="conf_time_l" size="8" {if $smarty.get.conf_time_l}value="{$smarty.get.conf_time_l}"{/if}></span>
-        <br>
-        <input type="button" onClick="changeCreateria();" value="Submit">
-        </div>
-
-      </div>
-    </th>
-    <!--<th>
-      <div class="fleft">
-        <span onClick="sortBy(event);" class="id {if $smarty.get.sort_element == "id"}sort {$smarty.get.sort}{/if}" title="Click on title to sort by userID">
-          id
-        </span>
-      </div>
-    </th>    
-    <th>
-      <div class="fleft">
-        <span onClick="sortBy(event);" class="xid {if $smarty.get.sort_element == "xid"}sort {$smarty.get.sort}{/if}" title="Click on title to sort by userXID">
-          xid
-        </span>
-      </div>
-    </th>
-    <th>
-      <div class="fleft">
-        <span onClick="sortBy(event);" class="oid {if $smarty.get.sort_element == "oid"}sort {$smarty.get.sort}{/if}" title="Click on title to sort by userOID">
-          oid
-        </span>
-      </div>
-    </th>
-    <th>
-      <div class="fleft">
-        <span onClick="sortBy(event);" class="mobile {if $smarty.get.sort_element == "mobile"}sort {$smarty.get.sort}{/if}" title="Click on title to sort by phone number">
-          mobile
-        </span>
-      </div>
-    </th>-->
-    <th>
-      <div class="fleft" title="Insert data for search by user information: id, xid, oid, e-mail, phone number">
+      <div class="fleft" title="Insert data for search by user information: id, e-mail, phone number">
         user info:
-        <input type="text" id="user_info_search" onInput="user_info_search();" {if $smarty.get.user_info}value="{$smarty.get.user_info}"{/if} size="40" title="Insert data for search by user information: id, xid, oid, e-mail, phone number">
+        <input type="text" id="user_info_search" onInput="user_info_search();" {if $smarty.get.user_info}value="{$smarty.get.user_info}"{/if} size="40" title="Insert data for search by user information: id, xe-mail, phone number">
       </div>
     </th>  
     <th>
       <div class="fleft">
-        reg type:
+        platform:
       </div>
-      <select id="reg_type" onChange="changeCreateria();" title="Select user`s registration type from list">
+      <select id="platform" onChange="changeCreateria();" title="Select user`s registration type from list">
         <option></option>
-        {foreach name=reg_type_list item=reg_type_list from=$reg_type_select_list}
-          {if $smarty.get.reg_type == $reg_type_list}
-            <option selected>{$reg_type_list}</option>
+        {foreach name=platform_list item=platform_list from=$platform_select_list}
+          {if $smarty.get.platform == $platform_list}
+            <option selected>{$platform_list}</option>
           {else}
-            <option>{$reg_type_list}</option>
+            <option>{$platform_list}</option>
           {/if}
         {/foreach}
       </select>
-    </th>
-    <th>
-      <div class="fleft">
-        pay_status:
-      </div>
-      <select id="pay_status" onChange="changeCreateria();" title="Select user`s payment status from list">
-        <option></option>
-        {foreach name=pay_status_list item=pay_status_list from=$pay_status_select_list}
-          {if $smarty.get.pay_status == $pay_status_list}
-            <option selected>{$pay_status_list}</option>
-          {else}
-            <option>{$pay_status_list}</option>
-          {/if}
-        {/foreach}
-      </select>
-    </th> 
-    <th>
-      <div class="fleft">
-        <span onClick="sortBy(event);" class="expired {if $smarty.get.sort_element == "expired"}sort {$smarty.get.sort}{/if}" title="Click on title to sort by expired date">
-          expired
-        </span>         
-      </div>
     </th>
     <th>
       <div class="fleft">
@@ -228,9 +157,6 @@
        <td>
          {$ui.site}
        </td>
-       <td class="unselectable">
-         {$ui.dc}
-       </td>
        <td>
          {$ui.gender}
        </td>
@@ -239,69 +165,29 @@
        </td>
        <td class="unselectable">
        <div class="rel_live">       
-        <span class="button_1" onClick="show_link(event,'rel');" title="Click here to get autologin link or QRcode">REL link</span>
         <span class="button_2" onClick="show_link(event,'live');" title="Click here to get autologin link or QRcode">LIVE link</span>
-       </div>       
-        <span class="link rel">
-          <a href="http://{$sites_conf[$ui.site].rel}/{$ui.key}/autologin.php" class="autologin_link">http://{$sites_conf[$ui.site].rel}/{$ui.key}/autologin.php</a>
-          <br>
-          <span class="button_2" onClick="show_link(event,'live');" title="Click here to get autologin link or QRcode">
-            LIVE link
-          </span>
-        </span>        
+       </div>             
         <span class="link live">
-        <a href="http://{$sites_conf[$ui.site].live}/{$ui.key}/autologin.php" class="autologin_link">http://{$sites_conf[$ui.site].live}/{$ui.key}/autologin.php</a>
-          <br>
-          <span class="button_1" onClick="show_link(event,'rel');" title="Click here to get autologin link or QRcode">
-            REL link
-          </span>
-        </span>
+        <a href="https://{$sites_conf[$ui.site].live}/site/autologin/key/{$ui.key}" class="autologin_link">https://{$sites_conf[$ui.site].live}/site/autologin/key/{$ui.key}</a>
+       </span>
        </td>
        <td class="unselectable">
         {$ui.reg_time}
        </td>
-       <td class="unselectable">
-        {$ui.conf_time}
-       </td>
-       <!--<td>
-        {$ui.id}
-       </td>
-       <td>
-        {$ui.xid}
-       </td>
-       <td>
-        {$ui.oid}
-       </td>
-       <td>
-        {$ui.mobile}
-       </td>-->
        <td> <br>
         E-mail: {$ui.mail}
-        <br>
-        Mobile: {$ui.mobile}
-        <br>    
+        <br> 
         id: {$ui.id}
-        <br>                
-        oid: {$ui.oid}
-        <br>   
-        xid: {$ui.xid}
-        <br>
-        Screenname: {$ui.screenname}
+        <br>                    
+        Login: {$ui.login}
         <br>
         Pass: {$ui.password}
-        <br>
-        
+        <br>        
         <a class="sync_link unselectable" onClick="sync('{$ui.id}')">sync</a>
        </td>
        <td>
-         {$ui.reg_type}
+         {$ui.platform}
        </td>       
-       <td class="unselectable">
-         {$ui.pay_status}
-       </td>
-       <td class="unselectable">
-         {$ui.expired}
-       </td> 
        <td class="unselectable">
          {$ui.traffic}
        </td>

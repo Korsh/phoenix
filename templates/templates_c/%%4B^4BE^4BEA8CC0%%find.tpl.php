@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.19, created on 2014-01-28 09:45:43
+<?php /* Smarty version 2.6.19, created on 2014-03-03 11:00:44
          compiled from find.tpl */ ?>
   <script type="text/javascript" src="/js/jquery.user.js"></script>
   <script type="text/javascript" src="/js/jquery-ui.custom.min.js"></script>      
@@ -112,11 +112,6 @@ if ($this->_foreach['site_list']['total'] > 0):
     </th>
     <th>
       <div class="fleft">
-        dc
-      </div>
-    </th>
-    <th>
-      <div class="fleft">
         gender:
       </div>
       <select id="gender" onChange="changeCreateria();" title="Select gender from list">
@@ -185,112 +180,32 @@ if ($this->_foreach['country_list']['total'] > 0):
       </div>
     </th>
     <th>
-      <div class="fleft">
-        <span onClick="sortBy(event);" class="conf_time <?php if ($_GET['sort_element'] == 'conf_time'): ?>sort <?php echo $_GET['sort']; ?>
-<?php endif; ?>" title="Click on title to sort by date of confirmation">
-          confirm
-        </span>
-        <span id="conf_time_diap" class="icon_search" title="Click here to set the range of confirmation date"></span>
-                                                               
-        <div id="conf_time_diap" class="date_diap<?php if (! $_GET['conf_time_ge'] && ! $_GET['conf_time_l']): ?> hide<?php endif; ?>">
-        <span class="data_input">>=<input type="text" id="conf_time_ge" size="8" <?php if ($_GET['conf_time_ge']): ?>value="<?php echo $_GET['conf_time_ge']; ?>
-"<?php endif; ?>></span>
-        <span class="data_input"><<input type="text" id="conf_time_l" size="8" <?php if ($_GET['conf_time_l']): ?>value="<?php echo $_GET['conf_time_l']; ?>
-"<?php endif; ?>></span>
-        <br>
-        <input type="button" onClick="changeCreateria();" value="Submit">
-        </div>
-
-      </div>
-    </th>
-    <!--<th>
-      <div class="fleft">
-        <span onClick="sortBy(event);" class="id <?php if ($_GET['sort_element'] == 'id'): ?>sort <?php echo $_GET['sort']; ?>
-<?php endif; ?>" title="Click on title to sort by userID">
-          id
-        </span>
-      </div>
-    </th>    
-    <th>
-      <div class="fleft">
-        <span onClick="sortBy(event);" class="xid <?php if ($_GET['sort_element'] == 'xid'): ?>sort <?php echo $_GET['sort']; ?>
-<?php endif; ?>" title="Click on title to sort by userXID">
-          xid
-        </span>
-      </div>
-    </th>
-    <th>
-      <div class="fleft">
-        <span onClick="sortBy(event);" class="oid <?php if ($_GET['sort_element'] == 'oid'): ?>sort <?php echo $_GET['sort']; ?>
-<?php endif; ?>" title="Click on title to sort by userOID">
-          oid
-        </span>
-      </div>
-    </th>
-    <th>
-      <div class="fleft">
-        <span onClick="sortBy(event);" class="mobile <?php if ($_GET['sort_element'] == 'mobile'): ?>sort <?php echo $_GET['sort']; ?>
-<?php endif; ?>" title="Click on title to sort by phone number">
-          mobile
-        </span>
-      </div>
-    </th>-->
-    <th>
-      <div class="fleft" title="Insert data for search by user information: id, xid, oid, e-mail, phone number">
+      <div class="fleft" title="Insert data for search by user information: id, e-mail, phone number">
         user info:
         <input type="text" id="user_info_search" onInput="user_info_search();" <?php if ($_GET['user_info']): ?>value="<?php echo $_GET['user_info']; ?>
-"<?php endif; ?> size="40" title="Insert data for search by user information: id, xid, oid, e-mail, phone number">
+"<?php endif; ?> size="40" title="Insert data for search by user information: id, xe-mail, phone number">
       </div>
     </th>  
     <th>
       <div class="fleft">
-        reg type:
+        platform:
       </div>
-      <select id="reg_type" onChange="changeCreateria();" title="Select user`s registration type from list">
+      <select id="platform" onChange="changeCreateria();" title="Select user`s registration type from list">
         <option></option>
-        <?php $_from = $this->_tpl_vars['reg_type_select_list']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['reg_type_list'] = array('total' => count($_from), 'iteration' => 0);
-if ($this->_foreach['reg_type_list']['total'] > 0):
-    foreach ($_from as $this->_tpl_vars['reg_type_list']):
-        $this->_foreach['reg_type_list']['iteration']++;
+        <?php $_from = $this->_tpl_vars['platform_select_list']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['platform_list'] = array('total' => count($_from), 'iteration' => 0);
+if ($this->_foreach['platform_list']['total'] > 0):
+    foreach ($_from as $this->_tpl_vars['platform_list']):
+        $this->_foreach['platform_list']['iteration']++;
 ?>
-          <?php if ($_GET['reg_type'] == $this->_tpl_vars['reg_type_list']): ?>
-            <option selected><?php echo $this->_tpl_vars['reg_type_list']; ?>
+          <?php if ($_GET['platform'] == $this->_tpl_vars['platform_list']): ?>
+            <option selected><?php echo $this->_tpl_vars['platform_list']; ?>
 </option>
           <?php else: ?>
-            <option><?php echo $this->_tpl_vars['reg_type_list']; ?>
+            <option><?php echo $this->_tpl_vars['platform_list']; ?>
 </option>
           <?php endif; ?>
         <?php endforeach; endif; unset($_from); ?>
       </select>
-    </th>
-    <th>
-      <div class="fleft">
-        pay_status:
-      </div>
-      <select id="pay_status" onChange="changeCreateria();" title="Select user`s payment status from list">
-        <option></option>
-        <?php $_from = $this->_tpl_vars['pay_status_select_list']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['pay_status_list'] = array('total' => count($_from), 'iteration' => 0);
-if ($this->_foreach['pay_status_list']['total'] > 0):
-    foreach ($_from as $this->_tpl_vars['pay_status_list']):
-        $this->_foreach['pay_status_list']['iteration']++;
-?>
-          <?php if ($_GET['pay_status'] == $this->_tpl_vars['pay_status_list']): ?>
-            <option selected><?php echo $this->_tpl_vars['pay_status_list']; ?>
-</option>
-          <?php else: ?>
-            <option><?php echo $this->_tpl_vars['pay_status_list']; ?>
-</option>
-          <?php endif; ?>
-        <?php endforeach; endif; unset($_from); ?>
-      </select>
-    </th> 
-    <th>
-      <div class="fleft">
-        <span onClick="sortBy(event);" class="expired <?php if ($_GET['sort_element'] == 'expired'): ?>sort <?php echo $_GET['sort']; ?>
-<?php endif; ?>" title="Click on title to sort by expired date">
-          expired
-        </span>         
-      </div>
     </th>
     <th>
       <div class="fleft">
@@ -324,10 +239,6 @@ if ($this->_foreach['user_info']['total'] > 0):
          <?php echo $this->_tpl_vars['ui']['site']; ?>
 
        </td>
-       <td class="unselectable">
-         <?php echo $this->_tpl_vars['ui']['dc']; ?>
-
-       </td>
        <td>
          <?php echo $this->_tpl_vars['ui']['gender']; ?>
 
@@ -338,94 +249,40 @@ if ($this->_foreach['user_info']['total'] > 0):
        </td>
        <td class="unselectable">
        <div class="rel_live">       
-        <span class="button_1" onClick="show_link(event,'rel');" title="Click here to get autologin link or QRcode">REL link</span>
         <span class="button_2" onClick="show_link(event,'live');" title="Click here to get autologin link or QRcode">LIVE link</span>
-       </div>       
-        <span class="link rel">
-          <a href="http://<?php echo $this->_tpl_vars['sites_conf'][$this->_tpl_vars['ui']['site']]['rel']; ?>
-/<?php echo $this->_tpl_vars['ui']['key']; ?>
-/autologin.php" class="autologin_link">http://<?php echo $this->_tpl_vars['sites_conf'][$this->_tpl_vars['ui']['site']]['rel']; ?>
-/<?php echo $this->_tpl_vars['ui']['key']; ?>
-/autologin.php</a>
-          <br>
-          <span class="button_2" onClick="show_link(event,'live');" title="Click here to get autologin link or QRcode">
-            LIVE link
-          </span>
-        </span>        
+       </div>             
         <span class="link live">
-        <a href="http://<?php echo $this->_tpl_vars['sites_conf'][$this->_tpl_vars['ui']['site']]['live']; ?>
-/<?php echo $this->_tpl_vars['ui']['key']; ?>
-/autologin.php" class="autologin_link">http://<?php echo $this->_tpl_vars['sites_conf'][$this->_tpl_vars['ui']['site']]['live']; ?>
-/<?php echo $this->_tpl_vars['ui']['key']; ?>
-/autologin.php</a>
-          <br>
-          <span class="button_1" onClick="show_link(event,'rel');" title="Click here to get autologin link or QRcode">
-            REL link
-          </span>
-        </span>
+        <a href="https://<?php echo $this->_tpl_vars['sites_conf'][$this->_tpl_vars['ui']['site']]['live']; ?>
+/site/autologin/key/<?php echo $this->_tpl_vars['ui']['key']; ?>
+" class="autologin_link">https://<?php echo $this->_tpl_vars['sites_conf'][$this->_tpl_vars['ui']['site']]['live']; ?>
+/site/autologin/key/<?php echo $this->_tpl_vars['ui']['key']; ?>
+</a>
+       </span>
        </td>
        <td class="unselectable">
         <?php echo $this->_tpl_vars['ui']['reg_time']; ?>
 
        </td>
-       <td class="unselectable">
-        <?php echo $this->_tpl_vars['ui']['conf_time']; ?>
-
-       </td>
-       <!--<td>
-        <?php echo $this->_tpl_vars['ui']['id']; ?>
-
-       </td>
-       <td>
-        <?php echo $this->_tpl_vars['ui']['xid']; ?>
-
-       </td>
-       <td>
-        <?php echo $this->_tpl_vars['ui']['oid']; ?>
-
-       </td>
-       <td>
-        <?php echo $this->_tpl_vars['ui']['mobile']; ?>
-
-       </td>-->
        <td> <br>
         E-mail: <?php echo $this->_tpl_vars['ui']['mail']; ?>
 
-        <br>
-        Mobile: <?php echo $this->_tpl_vars['ui']['mobile']; ?>
-
-        <br>    
+        <br> 
         id: <?php echo $this->_tpl_vars['ui']['id']; ?>
 
-        <br>                
-        oid: <?php echo $this->_tpl_vars['ui']['oid']; ?>
-
-        <br>   
-        xid: <?php echo $this->_tpl_vars['ui']['xid']; ?>
-
-        <br>
-        Screenname: <?php echo $this->_tpl_vars['ui']['screenname']; ?>
+        <br>                    
+        Login: <?php echo $this->_tpl_vars['ui']['login']; ?>
 
         <br>
         Pass: <?php echo $this->_tpl_vars['ui']['password']; ?>
 
-        <br>
-        
+        <br>        
         <a class="sync_link unselectable" onClick="sync('<?php echo $this->_tpl_vars['ui']['id']; ?>
 ')">sync</a>
        </td>
        <td>
-         <?php echo $this->_tpl_vars['ui']['reg_type']; ?>
+         <?php echo $this->_tpl_vars['ui']['platform']; ?>
 
        </td>       
-       <td class="unselectable">
-         <?php echo $this->_tpl_vars['ui']['pay_status']; ?>
-
-       </td>
-       <td class="unselectable">
-         <?php echo $this->_tpl_vars['ui']['expired']; ?>
-
-       </td> 
        <td class="unselectable">
          <?php echo $this->_tpl_vars['ui']['traffic']; ?>
 

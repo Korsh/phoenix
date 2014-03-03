@@ -1,4 +1,4 @@
-<?
+<?php
 
   define('INCLUDE_DIR',dirname(dirname(__FILE__)).'/inc/');  
   define('CLASS_DIR',dirname(dirname(__FILE__)).'/classes/');

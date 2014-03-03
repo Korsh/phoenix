@@ -1,4 +1,4 @@
-<?
+<?php
   define('INCLUDE_DIR',dirname(dirname(__FILE__)).'/inc/');  
   define('CLASS_DIR',dirname(dirname(__FILE__)).'/classes/');
 
@@ -10,12 +10,13 @@
 
   for($i=0; $i<sizeof($admin_conf); $i++)
   { 
-    $users = $ui->get_users_for_sync($admin_conf[$i]['dc']);
+    $config = $admin_conf[$i];
+    $users = $ui->get_users_for_sync($config['dc']);
     echo '<pre>'.print_r($users,true).'</pre>';
       
-    for($i=0;$i<sizeof($users);$i++)
-    {
-      $ui->sync_user_info($users[$i], $admin_conf[$i]);  
+    for($y=0;$y<sizeof($users);$y++)
+    {            
+      $ui->sync_user_info($users[$y], $config);  
     }
   } 
 ?>

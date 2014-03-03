@@ -1,4 +1,4 @@
-<?
+<?php
     
   if(isset($param[2]))
   {      
@@ -11,7 +11,7 @@
   }
   else
   {
-    echo 'need parametr: `param`';
+    echo 'need parameter: `param`';
   }
   exit;
 ?>

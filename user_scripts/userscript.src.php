@@ -1,4 +1,4 @@
-<?
+<?php
 
 foreach($options['keychar'] as $key)
 { 
@@ -13,7 +13,14 @@ foreach($options['keychar'] as $key)
     else
     $conditions_string .= $key['condition'][$i];
   }
-  $conditions_string .= ")\n{\n  ".$key['function']."(\"".$key['value']."\");\n}\n";
+  if($key['function'] == 'registerUser')
+  {
+    $conditions_string .= " && flag_register)\n{\n  ".$key['function']."(\"".$key['value']."\");\n}\n";
+  }
+  elseif ($key['function'] == 'setPaymentFields') 
+  {
+    $conditions_string .= " && flag_pay)\n{\n  ".$key['function']."(\"".$key['value']."\");\n}\n";
+  }
 }
   
 foreach($sites as $key)
@@ -34,8 +41,8 @@ $script_src = "// ==UserScript==
 // @exclude     *://*.google.com/*
 // @grant       GM_xmlhttpRequest
 // @grant       GM_info 
-// @downloadURL   https://phoenix.arzhanov.trunk-web1.pmmedia.com.ua/".$options['version'].".user.js
-// @updateURL   https://phoenix.arzhanov.trunk-web1.pmmedia.com.ua/meta.js
+// @downloadURL   https://".$_SERVER["HTTP_HOST"]."/".$options['version'].".user.js
+// @updateURL   https://".$_SERVER["HTTP_HOST"]."/meta.js
 // @version     ".$script_version."
 // ==/UserScript==
 
@@ -44,7 +51,7 @@ GM_info.scriptWillUpdate = true;
 var answer;
 var country;
 var city;
-getCountryInfo();
+getCountryFreeGeo();
 
 var date = new Date();
 var screenname = \"\";
@@ -53,9 +60,10 @@ var alphabet = {};
 var isShift=false;
 var isAlt=false;
 var isCtrl=false;
+var flag_register = true;
+var flag_pay = true;
 
 ".$variables."
-
 
 
 cities = ".json_encode($cities).";
@@ -118,28 +126,6 @@ function registerUser(gender)
   var reg_mail;
   var reg_gender;
   var reg_password;
-  if(country)
-  {
-    if(country == \"USA\")
-    {
-      var reg_location = \"90210\";  
-    }
-    else
-    {
-      var reg_location = city;      
-    }
-  }
-  else if(document.getElementById('country'))
-  {
-    country = document.getElementById('country').value;
-    reg_location = cities[country.toUpperCase()];
-  } 
-  else
-  {
-    country = \"USA\";
-    reg_location = \"90210\";
-    alert('Не опредена страна!');
-  }   
   var reg_submit;
   var reg_year = new Date().getFullYear()-23
   var reg_day = '10';
@@ -147,6 +133,7 @@ function registerUser(gender)
   var site_name = document.documentURI.split('.')[1];
   var mail = '".$options['mail']['account']."+'+uniqueAdding+'@".$options['mail']['domain']."';
   var password = '123123';
+  var reg_location = city;
  
   if(document.getElementById('UserForm_year'))
   {
@@ -356,7 +343,7 @@ function setInputValue(element, value)
 
 function saveProfile(mail){                 
   GM_xmlhttpRequest({    
-    url: \"https://phoenix.arzhanov.trunk-web1.pmmedia.com.ua/save_profile/\",
+    url: \"https://".$_SERVER["HTTP_HOST"]."/save_profile/\",
     method: \"POST\",
     data: \"mail=\"+encodeURIComponent(mail),
     headers: {
@@ -381,10 +368,54 @@ function saveProfile(mail){
   });  
 }
 
-function getCountryInfo()
+function getCountryFreeGeo()
 {
   GM_xmlhttpRequest({    
-    url: \"https://phoenix.arzhanov.trunk-web1.pmmedia.com.ua/get_country/\",
+    url: \"http://freegeoip.net/json/\",
+    method: \"GET\",
+    onload: function(response) {  
+      if(!response.responseText)
+      {
+	getCountryMy(null);
+        return false;
+      }
+      else
+      {
+        k = JSON.parse(response.responseText);
+        country_code = k['country_code'];
+        country = k['country_name'];        
+        city = k['city'];
+        zipcode = k['zipcode'];
+        if(country_code != '')
+        {
+            if(city == '' && zipcode == '')
+            {
+                getCountryInfo(country_code);
+            }
+            else if(city != '')
+            {
+                if(country_code == 'US' && zipcode != '')
+                {
+                    city = zipcode+', '+city;
+                }
+            }
+        }
+        else
+        {
+            getCountryInfo(null);
+        }
+        return true;
+      } 
+    }
+
+  }); 
+    
+}
+
+function getCountryInfo(country_code)
+{
+  GM_xmlhttpRequest({    
+    url: \"https://".$_SERVER["HTTP_HOST"]."/get_country/?country_code=\"+country_code,
     method: \"POST\",
     data: \"date\",
     headers: {
@@ -397,9 +428,9 @@ function getCountryInfo()
       }
       else
       {
-        answer = JSON.parse(response.responseText);
-        country = answer['country'];
-        city = answer['city'];
+        k = JSON.parse(response.responseText);
+        country = k['country'];
+        city = k['city'];
         return true;
       } 
     }

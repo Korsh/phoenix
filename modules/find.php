@@ -1,4 +1,4 @@
-<?
+<?php
 
 $sort_by = 'reg_time';
 $sort = 'DESC';
@@ -11,13 +11,7 @@ $page = 1;
           OR 
             `id` LIKE ('%".$_REQUEST['user_info']."%')   
           OR 
-            `xid` LIKE ('%".$_REQUEST['user_info']."%')  
-          OR 
-            `oid` LIKE ('%".$_REQUEST['user_info']."%')                
-          OR 
-            `screenname` LIKE ('%".$_REQUEST['user_info']."%')
-          OR 
-            `mobile` LIKE ('%".$_REQUEST['user_info']."%')) AND"; 
+            `login` LIKE ('%".$_REQUEST['user_info']."%')) AND"; 
     }
     
     /*
@@ -31,38 +25,14 @@ $page = 1;
     }
     */
     
-    if($_REQUEST['conf_time_ge'] != '')
-    {
-      $createrias['conf_time_ge'] = $_REQUEST['conf_time_ge'];
-    } 
     if($_REQUEST['reg_time_ge'] != '')
     {
       $createrias['reg_time_ge'] = $_REQUEST['reg_time_ge'];
-    }     
-    if($_REQUEST['conf_time_l'] != '')
-    {
-      $createrias['conf_time_l'] = $_REQUEST['conf_time_l'];
-    } 
+    }  
     if($_REQUEST['reg_time_l'] != '')
     {
       $createrias['reg_time_l'] = $_REQUEST['reg_time_l'];
     }     
-    if($_REQUEST['pay_status'] != '')
-    {
-      $createrias['pay_status'] = $_REQUEST['pay_status'];
-    }    
-    if($_REQUEST['dc'] != '')
-    {
-      $createrias['dc'] = $_REQUEST['dc'];
-    }    
-    if($_REQUEST['screenname'] != '')
-    {
-      $createrias['screenname'] = $_REQUEST['screenname'];
-    }    
-    if($_REQUEST['mobile'] != '')
-    {
-      $createrias['mobile'] = $_REQUEST['mobile'];
-    }    
     if($_REQUEST['mail'] != '')
     {
       $createrias['mail'] = $_REQUEST['mail'];
@@ -70,14 +40,6 @@ $page = 1;
     if($_REQUEST['id'] != '')
     {
       $createrias['id'] = $_REQUEST['id'];
-    }
-    if($_REQUEST['xid'] != '')
-    {
-      $createrias['xid'] = $_REQUEST['xid'];
-    }
-    if($_REQUEST['oid'] != '')
-    {
-      $createrias['oid'] = $_REQUEST['oid'];
     }
     if($_REQUEST['site'] != '')
     {
@@ -91,18 +53,14 @@ $page = 1;
     {
       $createrias['country'] = $_REQUEST['country'];
     }
-    if($_REQUEST['reg_type'] != '')
-    {
-      $createrias['reg_type'] = $_REQUEST['reg_type'];         
-    }
-    if($_REQUEST['pay_status'] != '')
-    {
-      $createrias['pay_status'] = $_REQUEST['pay_status'];         
-    }
     if($_REQUEST['traffic'] != '')
     {
       $createrias['traffic'] = $_REQUEST['traffic'];         
     }   
+    if($_REQUEST['platform'] != '')
+    {
+      $createrias['platform'] = $_REQUEST['platform'];         
+    }       
     if($_REQUEST['page'] != '')
     {
       $page = $_REQUEST['page'];         
@@ -120,13 +78,7 @@ $page = 1;
             break;
             case "reg_time_l":
               $createrias_text .= " `reg_time` <= '$item' AND `reg_time` > '0000-00-00' AND";
-            break;
-            case "conf_time_ge":
-              $createrias_text .= " `conf_time` > '$item' AND `conf_time` > '0000-00-00' AND";
-            break;
-            case "conf_time_l":
-              $createrias_text .= " `conf_time` <= '$item' AND `conf_time` > '0000-00-00' AND";
-            break;            
+            break;    
             default:
               $createrias_text .= " `$key` = '$item' AND";
             break;
@@ -174,11 +126,9 @@ else
     $smarty->assign('gender_select_list', $gender_select_list);
     $country_select_list = $ui->get_createria_list('country');
     $smarty->assign('country_select_list', $country_select_list);
-    $reg_type_select_list = $ui->get_createria_list('reg_type');
-    $smarty->assign('reg_type_select_list', $reg_type_select_list);
-    $pay_status_select_list = $ui->get_createria_list('pay_status');
-    $smarty->assign('pay_status_select_list', $pay_status_select_list);
     $traffic_select_list = $ui->get_createria_list('traffic');
-    $smarty->assign('traffic_select_list', $traffic_select_list);         
+    $smarty->assign('traffic_select_list', $traffic_select_list);        
+    $platform_select_list = $ui->get_createria_list('platform');
+    $smarty->assign('platform_select_list', $platform_select_list); 
 }
 ?>
