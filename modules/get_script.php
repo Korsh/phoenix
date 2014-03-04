@@ -68,7 +68,7 @@
         {
           $options = unserialize(fread($file_config, filesize($filename)));
         }
-        //echo '<pre>'.print_r($options,true).'</pre>';
+        echo '<pre>'.print_r($options,true).'</pre>';
         require_once('user_scripts/userscript.src.php');
         //echo $script_src;
         

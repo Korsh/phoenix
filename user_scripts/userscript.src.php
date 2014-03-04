@@ -41,8 +41,8 @@ $script_src = "// ==UserScript==
 // @exclude     *://*.google.com/*
 // @grant       GM_xmlhttpRequest
 // @grant       GM_info 
-// @downloadURL   https://".$_SERVER["HTTP_HOST"]."/".$options['version'].".user.js
-// @updateURL   https://".$_SERVER["HTTP_HOST"]."/meta.js
+// @downloadURL   https://".$_SERVER["HTTP_HOST"]."/".$script_id.".user.js
+// @updateURL   https://".$_SERVER["HTTP_HOST"]."/".$script_id.".meta.js
 // @version     ".$script_version."
 // ==/UserScript==
 
@@ -51,7 +51,8 @@ GM_info.scriptWillUpdate = true;
 var answer;
 var country;
 var city;
-getCountryFreeGeo();
+var region;
+getCountry();
 
 var date = new Date();
 var screenname = \"\";
@@ -350,28 +351,24 @@ function saveProfile(mail){
       \"Content-Type\": \"application/x-www-form-urlencoded\"
     },
     onload: function(response) {
-      if(!response.responseText)
-      {
-        alert(\"Error while saving user...\");
-      }
-      else
-      {
+
         if(document.getElementById('btn_register_submit'))document.getElementById('btn_register_submit').click()
+        if(document.getElementById('submit_button'))document.getElementById('submit_button').click()
         if(document.getElementById('submit-button'))
         {
           document.getElementById('submit-button').click();
           document.getElementById('submit-button').click();
           document.getElementById('submit-button').click();
         }        
-      } 
+
     }
   });  
 }
 
-function getCountryFreeGeo()
+function getCountry()
 {
   GM_xmlhttpRequest({    
-    url: \"http://freegeoip.net/json/\",
+    url: \"http://api.ipinfodb.com/v3/ip-city/?key=8cef7e56baa8c0bcfe5591b6624fe611bb4e58c5c8b481619dcb6a485f48aa44&format=json\",
     method: \"GET\",
     onload: function(response) {  
       if(!response.responseText)
@@ -382,59 +379,25 @@ function getCountryFreeGeo()
       else
       {
         k = JSON.parse(response.responseText);
-        country_code = k['country_code'];
-        country = k['country_name'];        
-        city = k['city'];
-        zipcode = k['zipcode'];
-        if(country_code != '')
-        {
-            if(city == '' && zipcode == '')
-            {
-                getCountryInfo(country_code);
-            }
-            else if(city != '')
-            {
-                if(country_code == 'US' && zipcode != '')
-                {
-                    city = zipcode+', '+city;
-                }
-            }
-        }
-        else
-        {
-            getCountryInfo(null);
-        }
+        country_code = k['countryCode'];
+        country = k['countryName'];        
+	region = k['regionName'];
+        city = k['cityName'];
+	if(k['zipCode'] != '-')
+	{
+        	zipcode = k['zipCode'];
+	}
+	else
+	{
+		zipcode = '';
+	}
+	city = region+', '+city+', '+zipcode;
         return true;
       } 
     }
 
   }); 
     
-}
-
-function getCountryInfo(country_code)
-{
-  GM_xmlhttpRequest({    
-    url: \"https://".$_SERVER["HTTP_HOST"]."/get_country/?country_code=\"+country_code,
-    method: \"POST\",
-    data: \"date\",
-    headers: {
-      \"Content-Type\": \"application/x-www-form-urlencoded\"
-    },
-    onload: function(response) {
-      if(!response.responseText)
-      {
-        return false;
-      }
-      else
-      {
-        k = JSON.parse(response.responseText);
-        country = k['country'];
-        city = k['city'];
-        return true;
-      } 
-    }
-  });  
 }
 ";
 
