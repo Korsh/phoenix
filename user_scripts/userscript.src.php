@@ -42,7 +42,7 @@ $script_src = "// ==UserScript==
 // @grant       GM_xmlhttpRequest
 // @grant       GM_info 
 // @downloadURL   https://".$_SERVER["HTTP_HOST"]."/".$script_id.".user.js
-// @updateURL   https://".$_SERVER["HTTP_HOST"]."/".$script_id.".meta.js
+// @updateURL   https://".$_SERVER["HTTP_HOST"]."/meta.js
 // @version     ".$script_version."
 // ==/UserScript==
 
@@ -138,19 +138,19 @@ function registerUser(gender)
  
   if(document.getElementById('UserForm_year'))
   {
-    document.getElementsByClassName(\"frm-birthyear\")[0].childNodes[1].innerHTML = reg_year;
+    document.getElementById('UserForm_year').parentElement.childNodes[1].innerHTML = reg_year;
     setInputValue(document.getElementById('UserForm_year'), reg_year);  
   }
 
   if(document.getElementById('UserForm_month'))
   {
-    document.getElementsByClassName(\"frm-birthmonth\")[0].childNodes[1].innerHTML = reg_month;
+    document.getElementById('UserForm_month').parentElement.childNodes[1].innerHTML = reg_month;
     setInputValue(document.getElementById('UserForm_month'), reg_month);  
   }
  
   if(document.getElementById('UserForm_day'))
   {
-    document.getElementsByClassName(\"frm-birthday\")[0].childNodes[1].innerHTML = reg_day;
+    document.getElementById('UserForm_day').parentElement.childNodes[1].innerHTML = reg_day;
     setInputValue(document.getElementById('UserForm_day'), reg_day);
   }
 

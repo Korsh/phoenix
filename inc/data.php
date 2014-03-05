@@ -21,7 +21,7 @@ $general_sitename = "phoenix";
   $DBH->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);  
   $DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   
-  $script_version = "1.1";
+  $script_version = "1.1.1";
   
   $dc_conf = array(
   "pc",

@@ -1,4 +1,4 @@
-<?
+<?php
 $script_src = "// ==UserScript==
 // @name        PhoenixAuto
 // @include     *

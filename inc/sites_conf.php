@@ -6,7 +6,7 @@
     'live' => 'localsgowild.com'),
   'freesexmatch' =>	array(
     'live' => 'freesexmatch.com'),                                        
-  'clickandflirt' =>	array(
+  'click&flirt' =>	array(
     'live' => 'clickandflirt.com'),                                     
   'hornyasia' =>	array(
     'live' => 'hornyasia.com'),                                      
