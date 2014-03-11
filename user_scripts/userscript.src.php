@@ -30,9 +30,8 @@ foreach($sites as $key)
 
 $script_src = "// ==UserScript==
 // @name        PhoenixAuto
-// @match     *://*.hwtool.net/*
-// @match     *://*.alcuda.priv/*
-// @match     *://*.pmmedia.priv/*
+
+// @match http://*.phoenix.*.trunk-front.pmmedia.com.ua
 
 ".$sites_string."
 // @exclude     *://redmine.hwtool.net/*
