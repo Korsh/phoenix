@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.19, created on 2014-03-04 10:27:17
+<?php /* Smarty version 2.6.19, created on 2014-03-27 08:04:43
          compiled from get_script.tpl */ ?>
 <a href="../">back</a>
 <script type="text/javascript" src="/js/jquery.user.js"></script>
@@ -117,6 +117,12 @@ Unsuccess: CVV:
 Ctrl<input type="checkbox" name="ctrl_pay_wrong_cvv"> + Shift<input type="checkbox" name="shift_pay_wrong_cvv"> + Alt<input type="checkbox" checked name="alt_pay_wrong_cvv"> + 
 <input type="text" id="pay_wrong_cvv" name="text_pay_wrong_cvv" size="1" onkeyup="setButtonField(event);" value="C">
 <input type="hidden" name="button_pay_wrong_cvv" value="67">
+<br>
+Generate Screenname(funnel):
+<br>
+Ctrl<input type="checkbox" name="ctrl_generate_screenname"> + Shift<input type="checkbox" checked name="shift_generate_screenname"> + Alt<input type="checkbox" name="alt_generate_screenname"> +
+<input type="text" id="generate_screenname" name="text_generate_screenname" size="1" onkeyup="setButtonField(event);" value="S">
+<input type="hidden" name="button_generate_screenname" value="83">
 <br>
 <input type="submit" value="submit" style="border: 1px solid;">
 </form>

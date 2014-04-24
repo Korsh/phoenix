@@ -163,15 +163,15 @@
        <td>
          {$ui.country}
        </td>
-       <td class="unselectable">
-       <div class="rel_live">       
+       <td class="selectable">
+       <div class="rel_live unselectable">       
         <span class="button_2" onClick="show_link(event,'live');" title="Click here to get autologin link or QRcode">LIVE link</span>
        </div>             
-        <span class="link live">
-        <a href="https://{$sites_conf[$ui.site].live}/site/autologin/key/{$ui.key}" class="autologin_link">https://{$sites_conf[$ui.site].live}/site/autologin/key/{$ui.key}</a>
+        <span class="link live selectable" style="display:block">
+        <a href="https://{$sites_conf[$ui.site].live}/site/autologin/key/{$ui.key}" target="_blank" class="autologin_link">https://{$sites_conf[$ui.site].live}/site/autologin/key/{$ui.key}</a>
        </span>
        </td>
-       <td class="unselectable">
+       <td class="selectable">
         {$ui.reg_time}
        </td>
        <td> <br>
@@ -185,7 +185,7 @@
         <br>        
         <a class="sync_link unselectable" onClick="sync('{$ui.id}')">sync</a>
        </td>
-       <td>
+       <td class="unselectable">
          {$ui.platform}
        </td>       
        <td class="unselectable">

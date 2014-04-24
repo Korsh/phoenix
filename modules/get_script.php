@@ -83,6 +83,7 @@
     }
     elseif($_GET['action'] == 'meta')
     {
+      unlink("user_scripts/meta.js");
       require_once('user_scripts/meta.js.src.php');
       $filename = "user_scripts/meta.js";    
       $file_script = fopen($filename,"w+");

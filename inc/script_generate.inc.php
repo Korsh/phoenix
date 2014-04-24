@@ -29,6 +29,9 @@
                     "setPaymentFields", 
                     "WrongCode",
     ),         
+    "generate_screenname" => array(
+		    "generateScreenname"
+    ),
   );
 
 ?>

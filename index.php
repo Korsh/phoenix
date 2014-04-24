@@ -45,7 +45,7 @@ switch ($param[1]) {
         }
         break;
     case "save_profile":
-        require_once(SCRIPT_DIR . 'save_profile.php');
+        require_once(SCRIPT_DIR . 'save_profile.php');        
         break;
     case "sync_by_createria":
         require_once(SCRIPT_DIR . 'sync_by_createria.php');

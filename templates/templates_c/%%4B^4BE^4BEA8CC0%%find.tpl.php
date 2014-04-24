@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.19, created on 2014-03-03 11:00:44
+<?php /* Smarty version 2.6.19, created on 2014-04-22 12:17:51
          compiled from find.tpl */ ?>
   <script type="text/javascript" src="/js/jquery.user.js"></script>
   <script type="text/javascript" src="/js/jquery-ui.custom.min.js"></script>      
@@ -247,19 +247,19 @@ if ($this->_foreach['user_info']['total'] > 0):
          <?php echo $this->_tpl_vars['ui']['country']; ?>
 
        </td>
-       <td class="unselectable">
-       <div class="rel_live">       
+       <td class="selectable">
+       <div class="rel_live unselectable">       
         <span class="button_2" onClick="show_link(event,'live');" title="Click here to get autologin link or QRcode">LIVE link</span>
        </div>             
-        <span class="link live">
+        <span class="link live selectable" style="display:block">
         <a href="https://<?php echo $this->_tpl_vars['sites_conf'][$this->_tpl_vars['ui']['site']]['live']; ?>
 /site/autologin/key/<?php echo $this->_tpl_vars['ui']['key']; ?>
-" class="autologin_link">https://<?php echo $this->_tpl_vars['sites_conf'][$this->_tpl_vars['ui']['site']]['live']; ?>
+" target="_blank" class="autologin_link">https://<?php echo $this->_tpl_vars['sites_conf'][$this->_tpl_vars['ui']['site']]['live']; ?>
 /site/autologin/key/<?php echo $this->_tpl_vars['ui']['key']; ?>
 </a>
        </span>
        </td>
-       <td class="unselectable">
+       <td class="selectable">
         <?php echo $this->_tpl_vars['ui']['reg_time']; ?>
 
        </td>
@@ -279,7 +279,7 @@ if ($this->_foreach['user_info']['total'] > 0):
         <a class="sync_link unselectable" onClick="sync('<?php echo $this->_tpl_vars['ui']['id']; ?>
 ')">sync</a>
        </td>
-       <td>
+       <td class="unselectable">
          <?php echo $this->_tpl_vars['ui']['platform']; ?>
 
        </td>       

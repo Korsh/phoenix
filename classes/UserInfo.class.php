@@ -77,29 +77,30 @@ class UserInfo
 
           $user_info['id'] = $id_arr[$i];
           $user_info['mail'] = $elements[0]['tr'][2]['td'][0]['#text'];
-          $user_info['login'] = $elements[0]['tr'][3]['td'][0]['#text'];
-          $user_info['password'] = $elements[0]['tr'][4]['td'][0]['#text'];
-          $user_info['key'] = $elements[0]['tr'][5]['td'][0]['#text'];
-          $user_info['site'] = strtolower($elements[0]['tr'][7]['td'][0]['#text']);
-          $user_info['gender'] = strtolower($elements[0]['tr'][8]['td'][0]['#text']);
-          $user_info['orientation'] = strtolower($elements[0]['tr'][9]['td'][0]['#text']);
-          $user_info['fname'] = strtolower($elements[0]['tr'][10]['td'][0]['#text']);
-          $user_info['lname'] = strtolower($elements[0]['tr'][11]['td'][0]['#text']);
-          $user_info['country'] = strtolower($elements[0]['tr'][12]['td'][0]['#text']);
-          $user_info['birthday'] = strtolower($elements[0]['tr'][13]['td'][0]['#text']);
-          $user_info['reg_time'] = strtolower($elements[0]['tr'][14]['td'][0]['#text']);
-          $user_info['active'] = strtolower($elements[0]['tr'][20]['td'][0]['#text']);
+          $user_info['login'] = $elements[0]['tr'][4]['td'][0]['#text'];
+          $user_info['password'] = $elements[0]['tr'][5]['td'][0]['#text'];
+          $user_info['key'] = $elements[0]['tr'][6]['td'][0]['#text'];
+          $user_info['site'] = strtolower($elements[0]['tr'][8]['td'][0]['#text']);
+          $user_info['gender'] = strtolower($elements[0]['tr'][9]['td'][0]['#text']);
+          $user_info['orientation'] = strtolower($elements[0]['tr'][10]['td'][0]['#text']);
+          $user_info['fname'] = strtolower($elements[0]['tr'][11]['td'][0]['#text']);
+          $user_info['lname'] = strtolower($elements[0]['tr'][12]['td'][0]['#text']);
+          $user_info['country'] = strtolower($elements[0]['tr'][13]['td'][0]['#text']);
+          $user_info['birthday'] = strtolower($elements[0]['tr'][14]['td'][0]['#text']);
+          $user_info['reg_time'] = strtolower($elements[0]['tr'][15]['td'][0]['#text']);
+          $user_info['active'] = strtolower($elements[0]['tr'][21]['td'][0]['#text']);
           
-          if(strtolower($elements[0]['tr'][25]['td'][0]['#text']) != 'undefined')
+          if(strtolower($elements[0]['tr'][26]['td'][0]['#text']) != 'undefined')
           {              
-              $user_info['traffic'] = strtolower($elements[0]['tr'][25]['td'][0]['#text']);
+              $user_info['traffic'] = strtolower($elements[0]['tr'][26]['td'][0]['#text']);
           }
           else
           {
-              $user_info['traffic'] = strtolower($elements[0]['tr'][26]['td'][0]['#text']);
+              $user_info['traffic'] = strtolower($elements[0]['tr'][27]['td'][0]['#text']);
           }
-          $user_info['platform'] = strtolower($elements[0]['tr'][27]['td'][0]['#text']);
-          $user_info['ll'] = strtolower($elements[0]['tr'][15]['td'][0]['#text']).":".strtolower($elements[0]['tr'][16]['td'][0]['#text']);      
+          $user_info['platform'] = strtolower($elements[0]['tr'][28]['td'][0]['#text']);
+          $user_info['ll'] = strtolower($elements[0]['tr'][16]['td'][0]['#text']).":".strtolower($elements[0]['tr'][17]['td'][0]['#text']);      
+//echo '<pre>'.print_r($user_info,true).'</pre>';
           $this->save_sync_user($user_info);   
       }
       $this->sync_dc($createria, $this->dc);

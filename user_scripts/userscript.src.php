@@ -21,6 +21,10 @@ foreach($options['keychar'] as $key)
   {
     $conditions_string .= " && flag_pay)\n{\n  ".$key['function']."(\"".$key['value']."\");\n}\n";
   }
+  elseif ($key['function'] == 'generateScreenname')
+  {
+    $conditions_string .= " && flag_funnel)\n{\n  ".$key['function']."(\"".$key['value']."\");\n}\n";
+  }
 }
   
 foreach($sites as $key)
@@ -31,7 +35,7 @@ foreach($sites as $key)
 $script_src = "// ==UserScript==
 // @name        PhoenixAuto
 
-// @match http://*.phoenix.*.trunk-front.pmmedia.com.ua
+// @match http://*.trunk-front.pmmedia.com.ua
 
 ".$sites_string."
 // @exclude     *://redmine.hwtool.net/*
@@ -62,6 +66,7 @@ var isAlt=false;
 var isCtrl=false;
 var flag_register = true;
 var flag_pay = true;
+var flag_funnel = true;
 
 ".$variables."
 
@@ -120,6 +125,14 @@ function getRandomArbitary(min, max)
   return parseInt(Math.random() * (max - min) + min);
 }
 
+function generateScreenname()
+{
+  if(document.querySelectorAll('input[data-name=\"userAttributes.screenname\"]')[0])
+  {
+    setInputValue(document.querySelectorAll('input[data-name=\"userAttributes.screenname\"]')[0], screenname);
+  }  
+}
+
 function registerUser(gender)
 {      
 
@@ -153,6 +166,11 @@ function registerUser(gender)
     setInputValue(document.getElementById('UserForm_day'), reg_day);
   }
 
+if(document.getElementsByName('UserFormWebCam[first_name]')[0])
+{
+  setInputValue(document.getElementsByName('UserFormWebCam[first_name]')[0], screenname);
+}
+
 if(document.getElementById('screenname'))
 {
   setInputValue(document.getElementById('UserForm_screenname'), screenname);
@@ -175,9 +193,10 @@ else
 }
 
 if(document.getElementById('UserForm_email'))setInputValue(document.getElementById('UserForm_email'), mail);
+if(document.getElementsByName('UserFormWebCam[password]')[0])setInputValue(document.getElementsByName('UserFormWebCam[password]')[0], mail);
 
 if(document.getElementById('UserForm_password'))setInputValue(document.getElementById('UserForm_password'), password);
-
+if(document.getElementsByName('UserFormWebCam[password]')[0])setInputValue(document.getElementsByName('UserFormWebCam[password]')[0], password);
   if(document.getElementById('UserForm_location'))
   {
       setInputValue(document.getElementById('UserForm_location'), reg_location);
@@ -352,6 +371,7 @@ function saveProfile(mail){
     onload: function(response) {
 
         if(document.getElementById('btn_register_submit'))document.getElementById('btn_register_submit').click()
+	if(document.getElementsByClassName('btn-submit')[0])document.getElementsByClassName('btn-submit')[0].click()
         if(document.getElementById('submit_button'))document.getElementById('submit_button').click()
         if(document.getElementById('submit-button'))
         {

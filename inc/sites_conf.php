@@ -25,6 +25,8 @@
   'couplesmeet' =>	array(
     'live' => 'couplesmeet.com'),
   'naughtyflirt' =>	array(
-    'live' => 'naughtyflirt.com')      
+    'live' => 'naughtyflirt.com'),
+  'nudeandlive' =>      array(
+    'live' => 'nudeandlive.com')
   );
 ?>
