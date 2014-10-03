@@ -1,4 +1,4 @@
-<?
+<?php
 
 //Europe
 $cities["GBR"] = "London";
@@ -39,4 +39,3 @@ $cities["USA"] = "New York";
 //South America
 $cities["ARG"] = "Buenos Aires";
 $cities["BRA"] = "Brazilia";
-?>

@@ -162,20 +162,20 @@
        </td>
        <td>
          {$ui.country}
-       </td>
+       </td> 
        <td class="selectable">
-       <div class="rel_live unselectable">       
+       <div class="rel_live unselectable link">       
         <span class="button_2" onClick="show_link(event,'live');" title="Click here to get autologin link or QRcode">LIVE link</span>
        </div>             
-        <span class="link live selectable" style="display:block">
-        <a href="https://{$sites_conf[$ui.site].live}/site/autologin/key/{$ui.key}" target="_blank" class="autologin_link">https://{$sites_conf[$ui.site].live}/site/autologin/key/{$ui.key}</a>
+        <span class="live unselectable">
+        <a href="https://{$sites_conf[$ui.site_id].domain}/site/autologin/key/{$ui.key}" target="_blank" class="autologin_link">https://{$sites_conf[$ui.site_id].domain}/site/autologin/key/{$ui.key}</a>
        </span>
        </td>
        <td class="selectable">
         {$ui.reg_time}
        </td>
-       <td> <br>
-        E-mail: {$ui.mail}
+       <td> <br><span class="selectable">
+        E-mail: {$ui.mail}</span>
         <br> 
         id: {$ui.id}
         <br>                    
@@ -183,7 +183,7 @@
         <br>
         Pass: {$ui.password}
         <br>        
-        <a class="sync_link unselectable" onClick="sync('{$ui.id}')">sync</a>
+        <a class="sync_link unselectable" onClick="sync_val = '{$ui.id}' != '' && '{$ui.site}' != '' ? '{$ui.id}' : '{$ui.mail}'; sync(sync_val);">sync</a>
        </td>
        <td class="unselectable">
          {$ui.platform}

@@ -1,52 +1,46 @@
 <?php
 
-foreach($options['keychar'] as $key)
-{ 
-  $variables .= "var ".end($key['condition'])." = false;\n";
-  $onkeyup_func_string .= " if(e.which == ".$key['button'].")\n{\n  ".end($key['condition'])."=false;\n}\n";
-  $onkeydown_func_string .= " if(e.which == ".$key['button'].")\n{\n  ".end($key['condition'])."=true;\n}\n"; 
-  $conditions_string .= " if(";
-  for($i = 0; $i < sizeof($key['condition']); $i++)
-  {
-    if($i != sizeof($key['condition']) - 1)
-    $conditions_string .= $key['condition'][$i].' && ';
-    else
-    $conditions_string .= $key['condition'][$i];
-  }
-  if($key['function'] == 'registerUser')
-  {
-    $conditions_string .= " && flag_register)\n{\n  ".$key['function']."(\"".$key['value']."\");\n}\n";
-  }
-  elseif ($key['function'] == 'setPaymentFields') 
-  {
-    $conditions_string .= " && flag_pay)\n{\n  ".$key['function']."(\"".$key['value']."\");\n}\n";
-  }
-  elseif ($key['function'] == 'generateScreenname')
-  {
-    $conditions_string .= " && flag_funnel)\n{\n  ".$key['function']."(\"".$key['value']."\");\n}\n";
-  }
+foreach ($options['keychar'] as $key) {
+    $variables .= "var " . end($key['condition']) . " = false;\n";
+    $onkeyup_func_string .= " if(e.which == " . $key['button'] . ")\n{\n  " . end($key['condition']) . "=false;\n}\n";
+    $onkeydown_func_string .= " if(e.which == " . $key['button'] . ")\n{\n  " . end($key['condition']) . "=true;\n}\n";
+    $conditions_string .= " if(";
+    for ($i = 0; $i < sizeof($key['condition']); $i++) {
+        if ($i != sizeof($key['condition']) - 1)
+            $conditions_string .= $key['condition'][$i] . ' && ';
+        else
+            $conditions_string .= $key['condition'][$i];
+    }
+    if ($key['function'] == 'registerUser') {
+        $conditions_string .= " && flag_register)\n{\n  " . $key['function'] . "(\"" . $key['value'] . "\");\n}\n";
+    } elseif ($key['function'] == 'setPaymentFields') {
+        $conditions_string .= " && flag_pay)\n{\n  " . $key['function'] . "(\"" . $key['value'] . "\");\n}\n";
+    } elseif ($key['function'] == 'generateScreenname') {
+        $conditions_string .= " && flag_funnel)\n{\n  " . $key['function'] . "(\"" . $key['value'] . "\");\n}\n";
+    }
 }
-  
-foreach($sites as $key)
-{
-  $sites_string .= "// @match     *://*.".$key['live']."/*\n";
-}     
+
+foreach ($sites as $key) {
+    if ($key['domain'] != '') {
+        $sites_string .= "// @match     *://*." . $key['domain'] . "/*\n";
+    }
+}
 
 $script_src = "// ==UserScript==
 // @name        PhoenixAuto
 
 // @match http://*.trunk-front.pmmedia.com.ua
 
-".$sites_string."
+" . $sites_string . "
 // @exclude     *://redmine.hwtool.net/*
 // @exclude     *://mail.google.com/*
 // @exclude     *://docs.google.com/*
 // @exclude     *://*.google.com/*
 // @grant       GM_xmlhttpRequest
 // @grant       GM_info 
-// @downloadURL   https://".$_SERVER["HTTP_HOST"]."/".$script_id.".user.js
-// @updateURL   https://".$_SERVER["HTTP_HOST"]."/meta.js
-// @version     ".$script_version."
+// @downloadURL   https://" . $_SERVER["HTTP_HOST"] . "/" . $script_id . ".user.js
+// @updateURL   https://" . $_SERVER["HTTP_HOST"] . "/meta.js
+// @version     " . $script_version . "
 // ==/UserScript==
 
 GM_info.scriptWillUpdate = true;
@@ -68,11 +62,11 @@ var flag_register = true;
 var flag_pay = true;
 var flag_funnel = true;
 
-".$variables."
+" . $variables . "
 
 
-cities = ".json_encode($cities).";
-alphabet = ".json_encode($alphabet).";
+cities = " . json_encode($cities) . ";
+alphabet = " . json_encode($alphabet) . ";
 
 var uniqueAdding = date.getTime();
 var screenname_adding = date.getTime().toString().slice(-5);
@@ -97,7 +91,7 @@ window.onkeyup=function(e)
   {
     isAlt=false;
   } 
-".$onkeyup_func_string."    
+" . $onkeyup_func_string . "    
 }
 
 window.onkeydown=function(e) 
@@ -114,8 +108,8 @@ window.onkeydown=function(e)
     {
       isAlt = true;
     }
-    ".$onkeydown_func_string."
-    ".$conditions_string."
+    " . $onkeydown_func_string . "
+    " . $conditions_string . "
     
     
 }
@@ -131,6 +125,12 @@ function generateScreenname()
   {
     setInputValue(document.querySelectorAll('input[data-name=\"userAttributes.screenname\"]')[0], screenname);
   }  
+  if(document.getElementById('funnelScreenname'))
+  {
+    setInputValue(document.getElementById('funnelScreenname'), screenname);
+  }  
+
+
 }
 
 function registerUser(gender)
@@ -144,7 +144,7 @@ function registerUser(gender)
   var reg_day = '10';
   var reg_month = '10';
   var site_name = document.documentURI.split('.')[1];
-  var mail = '".$options['mail']['account']."+'+uniqueAdding+'@".$options['mail']['domain']."';
+  var mail = '" . $options['mail']['account'] . "+'+uniqueAdding+'@" . $options['mail']['domain'] . "';
   var password = '123123';
   var reg_location = city;
  
@@ -192,6 +192,7 @@ else
   }
 }
 
+if(document.getElementById('UserForm_just_email'))setInputValue(document.getElementById('UserForm_just_email'), mail);
 if(document.getElementById('UserForm_email'))setInputValue(document.getElementById('UserForm_email'), mail);
 if(document.getElementsByName('UserFormWebCam[password]')[0])setInputValue(document.getElementsByName('UserFormWebCam[password]')[0], mail);
 
@@ -362,7 +363,7 @@ function setInputValue(element, value)
 
 function saveProfile(mail){                 
   GM_xmlhttpRequest({    
-    url: \"https://".$_SERVER["HTTP_HOST"]."/save_profile/\",
+    url: \"https://" . $_SERVER["HTTP_HOST"] . "/save_profile/\",
     method: \"POST\",
     data: \"mail=\"+encodeURIComponent(mail),
     headers: {
@@ -410,7 +411,7 @@ function getCountry()
 	{
 		zipcode = '';
 	}
-	city = region+', '+city+', '+zipcode;
+	city = city+', '+zipcode;
         return true;
       } 
     }
@@ -419,5 +420,3 @@ function getCountry()
     
 }
 ";
-
-?>
