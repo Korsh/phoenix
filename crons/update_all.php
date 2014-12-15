@@ -10,7 +10,7 @@ require_once(CLASS_DIR . 'UserInfo.class.php');
 $ui = new UserInfo($DBH, $sites);
 for ($i = 0; $i < sizeof($admin_conf); $i++) {
     
-    $config = $admin_conf[$i];
+    $config = $adminConf[$i];
     $users  = $ui->getUsersForUpdate($config['dc']);
     echo '<pre>' . print_r($users, true) . '</pre>';
     

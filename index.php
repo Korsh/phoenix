@@ -18,13 +18,14 @@ define('SMARTY_TEMPLATE_С_DIR', SMARTY_TEMPLATE_DIR . 'templates_c/');
 require_once(INCLUDE_DIR . 'data.php');
 require_once(INCLUDE_DIR . 'url.php');
 require_once(INCLUDE_DIR . 'cities_conf.php');
-require_once(INCLUDE_DIR . 'proxy_conf.php');
+
 require_once(INCLUDE_DIR . 'alphabet_conf.php');
 require_once(CLASS_DIR . 'UserInfo.class.php');
 
 
 $ui = new UserInfo($DBH);
 require_once(INCLUDE_DIR . 'sites_conf.php');
+require_once(INCLUDE_DIR . 'proxy_conf.php');
 $smarty                = new Smarty;
 $smarty->compile_check = true;
 $smarty->debugging     = false;
@@ -72,5 +73,5 @@ switch ($param[1]) {
         break;
 }
 $smarty->assign('APIKEY', $APIKEY);
-$smarty->assign('sites_conf', $sites);
+$smarty->assign('sitesConf', $sites);
 $smarty->display($display_page);

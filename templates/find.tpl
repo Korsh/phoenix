@@ -15,8 +15,8 @@
   </script>
   {include file='loading.tpl'}
 <div id="header">
-<div id="get_script_link">
-  <a href="../get_script" class="header_link" title="Click here to generate a new script for automate registration or pay by GreaseMonkey(Firefox)or TamperMonkey(Google Chrome)">Get script for GM/TamperMonkey</a>
+<div id="getScriptLink">
+  <a href="../get_script" class="headerLink" title="Click here to generate a new script for automate registration or pay by GreaseMonkey(Firefox)or TamperMonkey(Google Chrome)">Get script for GM/TamperMonkey</a>
 </div>
 {include file='sync.tpl'}
 <div id="pages" title="Select needed page from the list">
@@ -26,7 +26,7 @@
     {if ($smarty.section.page.index == $smarty.get.page) || (!$smarty.get.page && $smarty.section.page.first)}
       {$smarty.section.page.index} 
     {else}  
-      <a onClick="changePage({$smarty.section.page.index});"  class="header_link">
+      <a onClick="changePage({$smarty.section.page.index});"  class="headerLink">
         {$smarty.section.page.index}
       </a>
     {/if}  
@@ -40,24 +40,24 @@
 {/section}
 </div>
 {if $smarty.get}
-<a href="../"  class="header_link" title="Click here to clear all parameters for search">Clear parameters for search<span class="remove"></span></a>
+<a href="../"  class="headerLink" title="Click here to clear all parameters for search">Clear parameters for search<span class="remove"></span></a>
 {/if}
 </div>
-<table class="main_table">
+<table class="mainTable">
   <tr>
     <th>
       <div class="fleft">
-        <span onClick="sortBy(event);" class="site {if $smarty.get.sort_element == "site"}sort {$smarty.get.sort}{/if}" title="Click on title to sort by site">
+        <span onClick="sortBy(event);" class="site {if $smarty.get.sortElement == "site"}sort {$smarty.get.sort}{/if}" title="Click on title to sort by site">
           site:
         </span>
       </div>
       <select id="site" onChange="changeCreateria();" title="Select site from list">
         <option></option>            
-        {foreach name=site_list item=site_list from=$site_select_list}
-          {if $smarty.get.site == $site_list}
-            <option selected>{$site_list}</option>
+        {foreach name=siteList item=siteList from=$siteSelectList}
+          {if $smarty.get.site == $siteList}
+            <option selected>{$siteList}</option>
           {else}
-            <option>{$site_list}</option>
+            <option>{$siteList}</option>
           {/if}
         {/foreach}
       </select>
@@ -68,28 +68,28 @@
       </div>
       <select id="gender" onChange="changeCreateria();" title="Select gender from list">
         <option></option>
-        {foreach name=gender_list item=gender_list from=$gender_select_list}
-          {if $smarty.get.gender == $gender_list}
-            <option selected>{$gender_list}</option>
+        {foreach name=genderList item=genderList from=$genderSelectList}
+          {if $smarty.get.gender == $genderList}
+            <option selected>{$genderList}</option>
           {else}
-            <option>{$gender_list}</option>
+            <option>{$genderList}</option>
           {/if}
         {/foreach}
       </select>
      </th>
     <th>
       <div class="fleft">
-        <span onClick="sortBy(event);" class="country {if $smarty.get.sort_element == "country"}sort {$smarty.get.sort}{/if}" title="Click on title to sort by country">
+        <span onClick="sortBy(event);" class="country {if $smarty.get.sortElement == "country"}sort {$smarty.get.sort}{/if}" title="Click on title to sort by country">
           country:
         </span>
       </div>
       <select id="country" onChange="changeCreateria();" title="Select country from list">
         <option></option>
-        {foreach name=country_list item=country_list from=$country_select_list}
-          {if $smarty.get.country == $country_list}                
-            <option selected>{$country_list}</option>
+        {foreach name=countryList item=countryList from=$countrySelectList}
+          {if $smarty.get.country == $countryList}                
+            <option selected>{$countryList}</option>
           {else}
-            <option>{$country_list}</option>
+            <option>{$countryList}</option>
           {/if}
         {/foreach}
       </select>
@@ -101,14 +101,14 @@
     </th>
     <th>
       <div class="fleft">
-        <span onClick="sortBy(event);" class="reg_time {if !$smarty.get.sort_element || $smarty.get.sort_element == ''}sort desc {/if}{if $smarty.get.sort_element == "reg_time"}sort {$smarty.get.sort}{/if}" title="Click on title to sort by date of registration">
+        <span onClick="sortBy(event);" class="reg_time {if !$smarty.get.sortElement || $smarty.get.sortElement == ''}sort desc {/if}{if $smarty.get.sortElement == "reg_time"}sort {$smarty.get.sort}{/if}" title="Click on title to sort by date of registration">
           date          
         </span>
-        <span id="reg_time_diap" class="icon_search" title="Click here to set the range of registration date"></span>
+        <span id="regTimeDiap" class="iconSearch" title="Click here to set the range of registration date"></span>
 
-        <div id="reg_time_diap" class="date_diap{if !$smarty.get.reg_time_ge && !$smarty.get.reg_time_l} hide{/if}">
-        <span class="data_input">>=<input type="text" id="reg_time_ge" size="8" {if $smarty.get.reg_time_ge}value="{$smarty.get.reg_time_ge}"{/if}></span>
-        <span class="data_input"><<input type="text" id="reg_time_l" size="8" {if $smarty.get.reg_time_l}value="{$smarty.get.reg_time_l}"{/if}></span>
+        <div id="regTimeDiap" class="dateDiap{if !$smarty.get.regTimege && !$smarty.get.regTimel} hide{/if}">
+        <span class="dataInput">>=<input type="text" id="regTimege" size="8" {if $smarty.get.regTimege}value="{$smarty.get.regTimege}"{/if}></span>
+        <span class="dataInput"><<input type="text" id="regTimel" size="8" {if $smarty.get.regTimel}value="{$smarty.get.regTimel}"{/if}></span>
         <br>
         <input type="button" onClick="changeCreateria();" value="Submit">
         </div>
@@ -118,7 +118,7 @@
     <th>
       <div class="fleft" title="Insert data for search by user information: id, e-mail, phone number">
         user info:
-        <input type="text" id="user_info_search" onInput="user_info_search();" {if $smarty.get.user_info}value="{$smarty.get.user_info}"{/if} size="40" title="Insert data for search by user information: id, xe-mail, phone number">
+        <input type="text" id="userInfoSearch" onInput="userInfoSearch();" {if $smarty.get.userInfo}value="{$smarty.get.userInfo}"{/if} size="40" title="Insert data for search by user information: id, xe-mail, phone number">
       </div>
     </th>  
     <th>
@@ -127,11 +127,11 @@
       </div>
       <select id="platform" onChange="changeCreateria();" title="Select user`s registration type from list">
         <option></option>
-        {foreach name=platform_list item=platform_list from=$platform_select_list}
-          {if $smarty.get.platform == $platform_list}
-            <option selected>{$platform_list}</option>
+        {foreach name=platformList item=platformList from=$platformSelectList}
+          {if $smarty.get.platform == $platformList}
+            <option selected>{$platformList}</option>
           {else}
-            <option>{$platform_list}</option>
+            <option>{$platformList}</option>
           {/if}
         {/foreach}
       </select>
@@ -142,17 +142,17 @@
       </div>
       <select id="traffic" onChange="changeCreateria();" title="Select user`s traffic from list">
         <option></option>
-        {foreach name=traffic_list item=traffic_list from=$traffic_select_list}
-          {if $smarty.get.traffic == $traffic_list}
-            <option selected>{$traffic_list}</option>
+        {foreach name=trafficList item=trafficList from=$trafficSelectList}
+          {if $smarty.get.traffic == $trafficList}
+            <option selected>{$trafficList}</option>
           {else}
-            <option>{$traffic_list}</option>  
+            <option>{$trafficList}</option>  
           {/if}
         {/foreach}
       </select>
     </th>    
   </tr>
-  {foreach name=user_info item=ui from=$user_info}
+  {foreach name=userInfo item=ui from=$userInfo}
   <tr>
        <td>
          {$ui.site}
@@ -164,15 +164,15 @@
          {$ui.country}
        </td> 
        <td class="selectable">
-       <div class="rel_live unselectable link">       
-        <span class="button_2" onClick="show_link(event,'live');" title="Click here to get autologin link or QRcode">LIVE link</span>
+       <div class="relLive unselectable link">       
+        <span class="button2" onClick="showLink(event,'live');" title="Click here to get autologin link or QRcode">LIVE link</span>
        </div>             
         <span class="live unselectable">
-        <a href="https://{$sites_conf[$ui.site_id].domain}/site/autologin/key/{$ui.key}" target="_blank" class="autologin_link">https://{$sites_conf[$ui.site_id].domain}/site/autologin/key/{$ui.key}</a>
+        <a href="https://{$sitesConf[$ui.siteId].domain}/site/autologin/key/{$ui.key}" target="_blank" class="autologinLink">https://{$sitesConf[$ui.siteId].domain}/site/autologin/key/{$ui.key}</a>
        </span>
        </td>
        <td class="selectable">
-        {$ui.reg_time}
+        {$ui.regTime}
        </td>
        <td> <br><span class="selectable">
         E-mail: {$ui.mail}</span>
@@ -183,7 +183,7 @@
         <br>
         Pass: {$ui.password}
         <br>        
-        <a class="sync_link unselectable" onClick="sync_val = '{$ui.id}' != '' && '{$ui.site}' != '' ? '{$ui.id}' : '{$ui.mail}'; sync(sync_val);">sync</a>
+        <a class="syncLink unselectable" onClick="syncVal = '{$ui.id}' != '' && '{$ui.site}' != '' ? '{$ui.id}' : '{$ui.mail}'; sync(syncVal);">sync</a>
        </td>
        <td class="unselectable">
          {$ui.platform}

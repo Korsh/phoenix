@@ -1,35 +1,35 @@
 <?php
 
-$script_generate_actions = array(
-    "reg_male" => array(
+$scriptGenerateActions = array(
+    "RegMale" => array(
         "registerUser",
         "1"
     ),
-    "reg_female" => array(
+    "RegFemale" => array(
         "registerUser",
         "2"
     ),
-    "reg_couple" => array(
+    "RegCouple" => array(
         "registerUser",
         "3"
     ),
-    "pay_visa" => array(
+    "PayVisa" => array(
         "setPaymentFields",
         "Visa"
     ),
-    "pay_master" => array(
+    "PayMaster" => array(
         "setPaymentFields",
         "MasterCard"
     ),
-    "pay_wrong_data" => array(
+    "PayWrongData" => array(
         "setPaymentFields",
         "WrongDate"
     ),
-    "pay_wrong_cvv" => array(
+    "PayWrongCvv" => array(
         "setPaymentFields",
         "WrongCode"
     ),
-    "generate_screenname" => array(
+    "GenerateScreenname" => array(
         "generateScreenname"
     )
 );

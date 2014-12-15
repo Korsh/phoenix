@@ -1,24 +1,24 @@
 <?php
 
-$sort_by         = 'reg_time';
+$sortBy         = 'reg_time';
 $sort            = 'DESC';
 $page            = 1;
 $createrias      = array();
-$createrias_text = '';
-    if(!empty($_REQUEST['user_info']) && strlen($_REQUEST['user_info']) > 4) {
-        $createrias_text = " (`mail` LIKE ('%" . $_REQUEST['user_info'] . "%')
+$createriasText = '';
+    if(!empty($_REQUEST['userInfo']) && strlen($_REQUEST['userInfo']) > 4) {
+        $createriasText = " (`mail` LIKE ('%" . $_REQUEST['userInfo'] . "%')
               OR 
-                `id` LIKE ('%" . $_REQUEST['user_info'] . "%')   
+                `id` LIKE ('%" . $_REQUEST['userInfo'] . "%')   
               OR 
-                `login` LIKE ('%" . $_REQUEST['user_info'] . "%')) AND";
+                `login` LIKE ('%" . $_REQUEST['userInfo'] . "%')) AND";
     }
 
 
-    if(!empty($_REQUEST['reg_time_ge']) && $_REQUEST['reg_time_ge'] != '') {
-        $createrias['reg_time_ge'] = $_REQUEST['reg_time_ge'];
+    if(!empty($_REQUEST['regTimege']) && $_REQUEST['regTimege'] != '') {
+        $createrias['regTimege'] = $_REQUEST['regTimege'];
     }
-    if(!empty($_REQUEST['reg_time_l']) && $_REQUEST['reg_time_l'] != '') {
-        $createrias['reg_time_l'] = $_REQUEST['reg_time_l'];
+    if(!empty($_REQUEST['regTimel']) && $_REQUEST['regTimel'] != '') {
+        $createrias['regTimel'] = $_REQUEST['regTimel'];
     }
     if(!empty($_REQUEST['mail']) && $_REQUEST['mail'] != '') {
         $createrias['mail'] = $_REQUEST['mail'];
@@ -50,38 +50,37 @@ $createrias_text = '';
         foreach ($createrias as $key => $item) {
             
             switch ($key) {
-                case "reg_time_ge":
-                    $createrias_text .= " `reg_time` > '$item' AND `reg_time` > '0000-00-00' AND";
+                case "regTimege":
+                    $createriasText .= " `reg_time` > '$item' AND `reg_time` > '0000-00-00' AND";
                     break;
-                case "reg_time_l":
-                    $createrias_text .= " `reg_time` <= '$item' AND `reg_time` > '0000-00-00' AND";
+                case "regTimel":
+                    $createriasText .= " `reg_time` <= '$item' AND `reg_time` > '0000-00-00' AND";
                     break;
                 case "site":
-                    $createrias_text .= " `sites_config`.`site_name` = '$item' AND";
+                    $createriasText .= " `sites_config`.`site_name` = '$item' AND";
                     break;
                 default:
-                    $createrias_text .= " `$key` = '$item' AND";
+                    $createriasText .= " `$key` = '$item' AND";
                     break;
             }
             $count++;
         }
         
     }
-    $createrias_text = substr($createrias_text, 0, -4);
-    if(!$createrias_text == '') {
-        $createrias_text = ' AND' . $createrias_text;
+    $createriasText = substr($createriasText, 0, -4);
+    if(!$createriasText == '') {
+        $createriasText = ' AND' . $createriasText;
     }
-    if(isset($_REQUEST['sort_element'])) {
-        $sort_by = $_REQUEST['sort_element'];
+    if(isset($_REQUEST['sortElement'])) {
+        $sortBy = $_REQUEST['sortElement'];
     }
     if(isset($_REQUEST['sort'])) {
         $sort = $_REQUEST['sort'];
     }
-
     if(isset($_REQUEST['ajax'])) {
-        $answer                 = $ui->findByCreaterias($createrias_text, $sort_by, $sort, $page);
+        $answer                 = $ui->findByCreaterias($createriasText, $sortBy, $sort, $page);
         $answer['sites']        = $sites;
-        $answer['sort_element'] = $sort_by;
+        $answer['sortElement'] = $sortBy;
         $answer['sort']         = $sort;
         $answer['count'];
         $pages           = (int) ($answer['count'] / 20) + 1;
@@ -89,17 +88,17 @@ $createrias_text = '';
         echo json_encode($answer);
         exit;
     } else {
-        $answer = $ui->findByCreaterias($createrias_text, $sort_by, $sort, $page);
-        $smarty->assign('user_info', $answer['data']);
+        $answer = $ui->findByCreaterias($createriasText, $sortBy, $sort, $page);
+        $smarty->assign('userInfo', $answer['data']);
         $smarty->assign('pages', (int) ($answer['count'] / 20) + 1);
-        $site_select_list = $ui->getSiteList();
-        $smarty->assign('site_select_list', $site_select_list);
-        $gender_select_list = $ui->getCreateriaList('gender');
-        $smarty->assign('gender_select_list', $gender_select_list);
-        $country_select_list = $ui->getCreateriaList('country');
-        $smarty->assign('country_select_list', $country_select_list);
-        $traffic_select_list = $ui->getCreateriaList('traffic');
-        $smarty->assign('traffic_select_list', $traffic_select_list);
-        $platform_select_list = $ui->getCreateriaList('platform');
-        $smarty->assign('platform_select_list', $platformSelectList);
+        $siteSelectList = $ui->getSiteList();
+        $smarty->assign('siteSelectList', $siteSelectList);
+        $genderSelectList = $ui->getCreateriaList('gender');
+        $smarty->assign('genderSelectList', $genderSelectList);
+        $countrySelectList = $ui->getCreateriaList('country');
+        $smarty->assign('countrySelectList', $countrySelectList);
+        $trafficSelectList = $ui->getCreateriaList('traffic');
+        $smarty->assign('trafficSelectList', $trafficSelectList);
+        $platformSelectList = $ui->getCreateriaList('platform');
+        $smarty->assign('platformSelectList', $platformSelectList);
     }

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.19, created on 2014-03-27 08:04:43
+<?php /* Smarty version 2.6.19, created on 2014-11-19 09:17:34
          compiled from get_script.tpl */ ?>
 <a href="../">back</a>
 <script type="text/javascript" src="/js/jquery.user.js"></script>
@@ -21,15 +21,15 @@ function setButtonField(e)
 {
   sd = e;
   element = e.target.getAttribute("id");
-  button_code = e.which;
+  buttonCode = e.which;
   if(sd.target.value.length > 1)
   {    
     $(\'#\'+element).val($(\'#\'+element).val()[$(\'#\'+element).val().length - 1]);
-    $(\'input[name=button_\'+element+\']\').val(button_code);
+    $(\'input[name=button\'+element+\']\').val(buttonCode);
   }
   else if(sd.target.value.length > 0)
   {
-    $(\'input[name=button_\'+element+\']\').val(button_code);
+    $(\'input[name=button\'+element+\']\').val(buttonCode);
   }
 }
 
@@ -47,10 +47,10 @@ function in_array(needle, haystack)
 }
 
 
-var pressed_keys = {};
+var pressedKeys = {};
 document.onkeyup=function(e)
 {
-  if(pressed_keys.indexOf(e.which) != -1)
+  if(pressedKeys.indexOf(e.which) != -1)
   {
     
   }
@@ -75,54 +75,54 @@ Register page:
 <br>
 Male:
 <br>
-Ctrl<input type="checkbox" name="ctrl_reg_male"> + Shift<input type="checkbox" checked name="shift_reg_male"> + Alt<input type="checkbox" name="alt_reg_male"> + 
-<input type="text" id="reg_male" name="text_reg_male" size="1" onkeyup="setButtonField(event);" value="M">
-<input type="hidden" name="button_reg_male" value="77">
+Ctrl<input type="checkbox" name="ctrlRegMale"> + Shift<input type="checkbox" checked name="shiftRegMale"> + Alt<input type="checkbox" name="altRegMale"> + 
+<input type="text" id="regNale" name="textRegMale" size="1" onkeyup="setButtonField(event);" value="M">
+<input type="hidden" name="buttonRegMale" value="77">
 
 <br>
 Female:
 <br>
-Ctrl<input type="checkbox" name="ctrl_reg_female"> + Shift<input type="checkbox" checked name="shift_reg_female"> + Alt<input type="checkbox" name="alt_reg_female"> + 
-<input type="text" id="reg_female" name="text_reg_female" size="1" onkeyup="setButtonField(event);" value="F">
-<input type="hidden" name="button_reg_female" value="70">
+Ctrl<input type="checkbox" name="ctrlRegFemale"> + Shift<input type="checkbox" checked name="shiftRegFemale"> + Alt<input type="checkbox" name="altRegFemale"> + 
+<input type="text" id="regFemale" name="textRegFemale" size="1" onkeyup="setButtonField(event);" value="F">
+<input type="hidden" name="buttonRegFemale" value="70">
 <br>
 Couple:
 <br>
-Ctrl<input type="checkbox" name="ctrl_reg_couple"> + Shift<input type="checkbox" checked name="shift_reg_couple"> + Alt<input type="checkbox" name="alt_reg_couple"> + 
-<input type="text" id="reg_couple" name="text_reg_couple" size="1" onkeyup="setButtonField(event);" value="C">
-<input type="hidden" name="button_reg_couple" value="67">
+Ctrl<input type="checkbox" name="ctrlRegCouple"> + Shift<input type="checkbox" checked name="shiftRegCouple"> + Alt<input type="checkbox" name="altRegCouple"> + 
+<input type="text" id="regCouple" name="textRegCouple" size="1" onkeyup="setButtonField(event);" value="C">
+<input type="hidden" name="buttonRegCouple" value="67">
 </div>
 Payment page:
 <br>
 Success: Visa:
 <br>
-Ctrl<input type="checkbox" name="ctrl_pay_visa"> + Shift<input type="checkbox" name="shift_pay_visa"> + Alt<input type="checkbox" checked name="alt_pay_visa"> + 
-<input type="text" id="pay_visa" name="text_pay_visa" size="1" onkeyup="setButtonField(event);" value="V">
-<input type="hidden" name="button_pay_visa" value="86">
+Ctrl<input type="checkbox" name="ctrlPayVisa"> + Shift<input type="checkbox" name="shiftPayVisa"> + Alt<input type="checkbox" checked name="altPayVisa"> + 
+<input type="text" id="payVisa" name="textPayVisa" size="1" onkeyup="setButtonField(event);" value="V">
+<input type="hidden" name="buttonPayVisa" value="86">
 <br>
 Success: MasterCard:
 <br>
-Ctrl<input type="checkbox" name="ctrl_pay_master"> + Shift<input type="checkbox" name="shift_pay_master"> + Alt<input type="checkbox" checked name="alt_pay_master"> + 
-<input type="text" id="pay_master" name="text_pay_master" size="1" onkeyup="setButtonField(event);" value="M">
-<input type="hidden" name="button_pay_master" value="77">
+Ctrl<input type="checkbox" name="ctrlPayMaster"> + Shift<input type="checkbox" name="shiftPayMaster"> + Alt<input type="checkbox" checked name="altPayMaster"> + 
+<input type="text" id="payMaster" name="textPayMaster" size="1" onkeyup="setButtonField(event);" value="M">
+<input type="hidden" name="buttonPayMaster" value="77">
 <br>
 Unsuccess: Date: 
 <br>
-Ctrl<input type="checkbox" name="ctrl_pay_wrong_data"> + Shift<input type="checkbox" name="shift_pay_wrong_data"> + Alt<input type="checkbox" checked name="alt_pay_wrong_data"> + 
-<input type="text" id="pay_wrong_data" name="text_pay_wrong_data" size="1" onkeyup="setButtonField(event);" value="D">
-<input type="hidden" name="button_pay_wrong_data" value="68">
+Ctrl<input type="checkbox" name="ctrlPayWrongData"> + Shift<input type="checkbox" name="shiftPayWrongData"> + Alt<input type="checkbox" checked name="altPayWrongData"> + 
+<input type="text" id="payWrongData" name="textPayWrongData" size="1" onkeyup="setButtonField(event);" value="D">
+<input type="hidden" name="buttonPayWrongData" value="68">
 <br>
 Unsuccess: CVV: 
 <br>
-Ctrl<input type="checkbox" name="ctrl_pay_wrong_cvv"> + Shift<input type="checkbox" name="shift_pay_wrong_cvv"> + Alt<input type="checkbox" checked name="alt_pay_wrong_cvv"> + 
-<input type="text" id="pay_wrong_cvv" name="text_pay_wrong_cvv" size="1" onkeyup="setButtonField(event);" value="C">
-<input type="hidden" name="button_pay_wrong_cvv" value="67">
+Ctrl<input type="checkbox" name="ctrlPayWrongCvv"> + Shift<input type="checkbox" name="shiftPayWrongCvv"> + Alt<input type="checkbox" checked name="altPayWrongCvv"> + 
+<input type="text" id="payWrongCvv" name="textPayWrongCvv" size="1" onkeyup="setButtonField(event);" value="C">
+<input type="hidden" name="buttonPayWrongCvv" value="67">
 <br>
 Generate Screenname(funnel):
 <br>
-Ctrl<input type="checkbox" name="ctrl_generate_screenname"> + Shift<input type="checkbox" checked name="shift_generate_screenname"> + Alt<input type="checkbox" name="alt_generate_screenname"> +
-<input type="text" id="generate_screenname" name="text_generate_screenname" size="1" onkeyup="setButtonField(event);" value="S">
-<input type="hidden" name="button_generate_screenname" value="83">
+Ctrl<input type="checkbox" name="ctrlGenerateScreenname"> + Shift<input type="checkbox" checked name="shiftGenerateScreenname"> + Alt<input type="checkbox" name="altGenerateScreenname"> +
+<input type="text" id="generateScreenname" name="textGenerateScreenname" size="1" onkeyup="setButtonField(event);" value="S">
+<input type="hidden" name="buttonGenerateScreenname" value="83">
 <br>
 <input type="submit" value="submit" style="border: 1px solid;">
 </form>

@@ -3,41 +3,39 @@ require_once(INCLUDE_DIR . "script_generate.inc.php");
 require_once(LIB_DIR . "rfc822/rfc822.php");
 
 if (isset($_GET['action'])) {
-    
     if ($_GET['action'] == 'new') {
-        $script_id = time();
+        $scriptId = time();
         if (isset($_POST) && (isset($_POST['mail']) && (bool) is_valid_email_address($_POST['mail']))) {
             $keychar = array();
             list($account, $domain) = split('@', $_POST['mail']);
-            $options['version']         = $script_version;
+            $options['version']         = $scriptVersion;
             $options['mail']['account'] = $account;
             $options['mail']['domain']  = $domain;
-            foreach ($script_generate_actions as $key => $option) {
-                if (isset($_POST['ctrl_' . $key])) {
+            foreach ($scriptGenerateActions as $key => $option) {
+                if (isset($_POST['ctrl' . $key])) {
                     $options['keychar'][$key]['condition'][] = "isCtrl";
                 }
-                if (isset($_POST['alt_' . $key])) {
+                if (isset($_POST['alt' . $key])) {
                     $options['keychar'][$key]['condition'][] = "isAlt";
                 }
-                if (isset($_POST['shift_' . $key])) {
+                if (isset($_POST['shift' . $key])) {
                     $options['keychar'][$key]['condition'][] = "isShift";
                 }
-                $options['keychar'][$key]['condition'][] = "is" . $_POST['text_' . $key];
-                $options['keychar'][$key]['button']      = $_POST['button_' . $key];
+                $options['keychar'][$key]['condition'][] = "is" . $_POST['text' . $key];
+                $options['keychar'][$key]['button']      = $_POST['button' . $key];
                 $options['keychar'][$key]['function']    = $option[0];
                 $options['keychar'][$key]['value']       = $option[1];
             }
-            
-            $file_config = fopen("user_scripts/configs/" . $script_id . ".txt", "w+");
-            chmod($file_config, 0777);
-            fwrite($file_config, serialize($options));
+            $fileConfig = fopen("user_scripts/configs/" . $scriptId . ".txt", "w+");
+            chmod($fileConfig, 0777);
+            fwrite($fileConfig, serialize($options));
             
             require_once('user_scripts/userscript.src.php');
             
-            $filename    = "user_scripts/scripts/" . $script_id . ".user.js";
-            $file_script = fopen($filename, "w+");
-            chmod($file_script, 0777);
-            fwrite($file_script, $script_src);
+            $filename    = "user_scripts/scripts/" . $scriptId . ".user.js";
+            $fileScript = fopen($filename, "w+");
+            chmod($fileScript, 0777);
+            fwrite($fileScript, $scriptSrc);
             header('Location: ' . ($filename));
             
         } else {
@@ -47,19 +45,19 @@ if (isset($_GET['action'])) {
     } elseif ($_GET['action'] == 'update' && isset($_GET['id'])) {
         
         if (preg_match("/([0-9]+)/", $_GET['id'], $match)) {
-            $script_id   = $match[1];
-            $filename    = "user_scripts/configs/" . $script_id . ".txt";
-            $file_config = fopen($filename, "r");
-            if ($file_config) {
-                $options = unserialize(fread($file_config, filesize($filename)));
+            $scriptId   = $match[1];
+            $filename    = "user_scripts/configs/" . $scriptId . ".txt";
+            $fileConfig = fopen($filename, "r");
+            if ($fileConfig) {
+                $options = unserialize(fread($fileConfig, filesize($filename)));
             }
-            echo '<pre>' . print_r($options, true) . '</pre>';
+
             require_once('user_scripts/userscript.src.php');
             
-            $filename    = "user_scripts/scripts/" . $script_id . ".user.js";
-            $file_script = fopen($filename, "w+");
-            chmod($file_script, 0777);
-            fwrite($file_script, $script_src);
+            $filename    = "user_scripts/scripts/" . $scriptId . ".user.js";
+            $fileScript = fopen($filename, "w+");
+            chmod($fileScript, 0777);
+            fwrite($fileScript, $scriptSrc);
             
             header('Location: ' . ($filename));
         }
@@ -67,9 +65,9 @@ if (isset($_GET['action'])) {
         unlink("user_scripts/meta.js");
         require_once('user_scripts/meta.js.src.php');
         $filename    = "user_scripts/meta.js";
-        $file_script = fopen($filename, "w+");
+        $fileScript = fopen($filename, "w+");
         chmod($filename, 0777);
-        fwrite($file_script, $script_src);
+        fwrite($fileScript, $scriptSrc);
         header('Location: ' . ($filename));
     }
 }

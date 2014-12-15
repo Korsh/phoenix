@@ -1,6 +1,6 @@
 <?php
-$script_src = "// ==UserScript==
+$scriptSrc = "// ==UserScript==
 // @name        PhoenixAuto
 // @include     *
-// @version     " . $script_version . "
+// @version     " . $scriptVersion . "
 // ==/UserScript==";

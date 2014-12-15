@@ -1,5 +1,5 @@
 // ==UserScript==
 // @name        PhoenixAuto
 // @include     *
-// @version     1.2.2
+// @version     1.4
 // ==/UserScript==

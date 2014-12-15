@@ -1,4 +1,4 @@
-#script_menu {
+#scriptMenu {
     background-color: #F4F5F7;
     border: 1px solid;
     display: none;
@@ -10,7 +10,7 @@
     z-index: 1000;
 }
 
-#script_button {
+#scriptButton {
     background-color: #F4F5F7;
     border: 1px solid #000000;
     display: block;
@@ -22,7 +22,7 @@
     z-index: 1000;
 }
 
-#script_register_menu {
+#scriptRegisterMenu {
     background-color: #F4F5F7;
     border: 1px solid;
     display: none;
@@ -34,7 +34,7 @@
     z-index: 1000;
 } 
 
-#script_pay_menu {
+#scriptPayMenu {
     background-color: #F4F5F7;
     border: 1px solid;
     display: none;

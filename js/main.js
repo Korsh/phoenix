@@ -15,12 +15,12 @@ function changeCreateria()
    },
    function(response){    
      answer = eval('('+response+')');
-     $('.main_table tr:not(:first)').remove();
+     $('.mainTable tr:not(:first)').remove();
      if(answer != "empty")
      { 
         for(var k in answer.data) 
         {
-          $('.main_table').append("<tr>"
+          $('.mainTable').append("<tr>"
             +"<td>"+answer.data[k]['site']+"</td>"
             +"<td>"+answer.data[k]['gender']+"</td>"
             +"<td>"+answer.data[k]['country']+"</td>"
@@ -33,7 +33,7 @@ function changeCreateria()
       }
       else
       {
-          $('.main_table').append("<tr>"
+          $('.mainTable').append("<tr>"
             +"<td>no data</td>"          
           +"</tr>");
       }
@@ -94,12 +94,12 @@ function sortRequest(element, sort)
    },
    function(response){    
      answer = eval('('+response+')');
-     $('.main_table tr:not(:first)').remove();
+     $('.mainTable tr:not(:first)').remove();
      if(answer != "empty")
      { 
         for(var k in answer.data) 
         {
-          $('.main_table').append("<tr>"
+          $('.mainTable').append("<tr>"
             +"<td>"+answer.data[k]['site']+"</td>"
             +"<td>"+answer.data[k]['gender']+"</td>"
             +"<td>"+answer.data[k]['country']+"</td>"
@@ -115,7 +115,7 @@ function sortRequest(element, sort)
       }
       else
       {
-          $('.main_table').append("<tr>"
+          $('.mainTable').append("<tr>"
             +"<td>no data</td>"          
           +"</tr>");
       }

@@ -8,13 +8,13 @@ table {
     color: #002C51;
     font-size: 13px;
 }
-.main_table {
+.mainTable {
     border: 1px solid #EEEEEE;
     border-collapse: collapse;
     margin-top: 55px;
 }
 
-.main_table TH {
+.mainTable TH {
     background-color: #BBB;
     border: 1px solid #DDDDDD;    
     padding: 5px;
@@ -22,13 +22,13 @@ table {
   -khtml-user-select: none;
   user-select: none;      
 }
-.main_table TD {
+.mainTable TD {
     border: 1px solid #DDDDDD;
     font-size: 12px;
     padding: 5px 5px 5px 5px;
 }
 
-.main_table TR:nth-child(odd){
+.mainTable TR:nth-child(odd){
     background-color: #EEEEEE
 }
 
@@ -73,13 +73,13 @@ select {
     cursor: pointer;
 }
 
-.no_data{
+.noData{
     font-weight: 800;
     text-align: center;
     text-transform: uppercase;
 }
 
-.button_3 {
+.button3 {
 	color: #111;
     text-decoration: none; /* Убираем подчеркивание ссылки */
     background: #fd970b; /* Цвет фона кнопки по умолчанию */
@@ -96,7 +96,7 @@ select {
     text-align: center;
 }
 
-.button_2 {
+.button2 {
 	color: #fff;
     text-decoration: none; /* Убираем подчеркивание ссылки */
     background: #0bba0c; /* Цвет фона кнопки по умолчанию */
@@ -113,7 +113,7 @@ select {
     text-align: center;    
 }
 
-.button_1 {
+.button1 {
 	color: #fff;
     text-decoration: none; /* Убираем подчеркивание ссылки */
     background: #0973bb; /* Цвет фона кнопки по умолчанию */
@@ -130,7 +130,7 @@ select {
     text-align: center;
 }
 
-.sync_link {
+.syncLink {
   cursor:pointer; 
     color:blue; 
     text-decoration:underline;
@@ -142,7 +142,7 @@ select {
   display: none;
 }
 
-.icon_search {
+.iconSearch {
   background: url("/img/search.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
   height: 16px;
   margin: 0 0 0 3px;
@@ -158,7 +158,7 @@ select {
   width: auto;  
 }
 
-.data_input {
+.dataInput {
   height: 16px;
   margin: 0 0 0 3px;
   padding: 2px 0 0 16px;
@@ -167,7 +167,7 @@ select {
   float:right;
 }
 
-.date_diap {
+.dateDiap {
   float: left;
   width: auto;
 }
@@ -205,7 +205,7 @@ select {
   margin: 200px 35%;
 }
 
-#sync_form {
+#syncForm {
     margin: 0 35%;
     position: absolute;
 }
@@ -222,19 +222,19 @@ select {
   user-select: none;    
 }
 
-a.header_link {
+a.headerLink {
  color:#B0FFCA; 
   text-decoration: none; 
  cursor:pointer;
 }
 
-a.header_link:hover {
+a.headerLink:hover {
  color:#0080FF; 
 text-decoration: none; 
  cursor:pointer;
 }
 
-a.header_link:active {
+a.headerLink:active {
  color:#CACACA; 
 text-decoration: none; 
  cursor:pointer;
@@ -245,7 +245,7 @@ text-decoration: none;
   margin: 15px 35%;
 }*/
 
-#get_script_link {
+#getScriptLink {
   position: absolute;
   right: 20px;
 }  

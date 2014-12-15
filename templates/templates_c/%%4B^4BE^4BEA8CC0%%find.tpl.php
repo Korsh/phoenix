@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.19, created on 2014-04-22 12:17:51
+<?php /* Smarty version 2.6.19, created on 2014-11-19 09:13:37
          compiled from find.tpl */ ?>
   <script type="text/javascript" src="/js/jquery.user.js"></script>
   <script type="text/javascript" src="/js/jquery-ui.custom.min.js"></script>      
@@ -22,8 +22,8 @@ $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
 <div id="header">
-<div id="get_script_link">
-  <a href="../get_script" class="header_link" title="Click here to generate a new script for automate registration or pay by GreaseMonkey(Firefox)or TamperMonkey(Google Chrome)">Get script for GM/TamperMonkey</a>
+<div id="getScriptLink">
+  <a href="../get_script" class="headerLink" title="Click here to generate a new script for automate registration or pay by GreaseMonkey(Firefox)or TamperMonkey(Google Chrome)">Get script for GM/TamperMonkey</a>
 </div>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => 'sync.tpl', 'smarty_include_vars' => array()));
@@ -66,7 +66,7 @@ $this->_sections['page']['last']       = ($this->_sections['page']['iteration'] 
  
     <?php else: ?>  
       <a onClick="changePage(<?php echo $this->_sections['page']['index']; ?>
-);"  class="header_link">
+);"  class="headerLink">
         <?php echo $this->_sections['page']['index']; ?>
 
       </a>
@@ -81,30 +81,30 @@ $this->_sections['page']['last']       = ($this->_sections['page']['iteration'] 
 <?php endfor; endif; ?>
 </div>
 <?php if ($_GET): ?>
-<a href="../"  class="header_link" title="Click here to clear all parameters for search">Clear parameters for search<span class="remove"></span></a>
+<a href="../"  class="headerLink" title="Click here to clear all parameters for search">Clear parameters for search<span class="remove"></span></a>
 <?php endif; ?>
 </div>
-<table class="main_table">
+<table class="mainTable">
   <tr>
     <th>
       <div class="fleft">
-        <span onClick="sortBy(event);" class="site <?php if ($_GET['sort_element'] == 'site'): ?>sort <?php echo $_GET['sort']; ?>
+        <span onClick="sortBy(event);" class="site <?php if ($_GET['sortElement'] == 'site'): ?>sort <?php echo $_GET['sort']; ?>
 <?php endif; ?>" title="Click on title to sort by site">
           site:
         </span>
       </div>
       <select id="site" onChange="changeCreateria();" title="Select site from list">
         <option></option>            
-        <?php $_from = $this->_tpl_vars['site_select_list']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['site_list'] = array('total' => count($_from), 'iteration' => 0);
-if ($this->_foreach['site_list']['total'] > 0):
-    foreach ($_from as $this->_tpl_vars['site_list']):
-        $this->_foreach['site_list']['iteration']++;
+        <?php $_from = $this->_tpl_vars['siteSelectList']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['siteList'] = array('total' => count($_from), 'iteration' => 0);
+if ($this->_foreach['siteList']['total'] > 0):
+    foreach ($_from as $this->_tpl_vars['siteList']):
+        $this->_foreach['siteList']['iteration']++;
 ?>
-          <?php if ($_GET['site'] == $this->_tpl_vars['site_list']): ?>
-            <option selected><?php echo $this->_tpl_vars['site_list']; ?>
+          <?php if ($_GET['site'] == $this->_tpl_vars['siteList']): ?>
+            <option selected><?php echo $this->_tpl_vars['siteList']; ?>
 </option>
           <?php else: ?>
-            <option><?php echo $this->_tpl_vars['site_list']; ?>
+            <option><?php echo $this->_tpl_vars['siteList']; ?>
 </option>
           <?php endif; ?>
         <?php endforeach; endif; unset($_from); ?>
@@ -116,16 +116,16 @@ if ($this->_foreach['site_list']['total'] > 0):
       </div>
       <select id="gender" onChange="changeCreateria();" title="Select gender from list">
         <option></option>
-        <?php $_from = $this->_tpl_vars['gender_select_list']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['gender_list'] = array('total' => count($_from), 'iteration' => 0);
-if ($this->_foreach['gender_list']['total'] > 0):
-    foreach ($_from as $this->_tpl_vars['gender_list']):
-        $this->_foreach['gender_list']['iteration']++;
+        <?php $_from = $this->_tpl_vars['genderSelectList']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['genderList'] = array('total' => count($_from), 'iteration' => 0);
+if ($this->_foreach['genderList']['total'] > 0):
+    foreach ($_from as $this->_tpl_vars['genderList']):
+        $this->_foreach['genderList']['iteration']++;
 ?>
-          <?php if ($_GET['gender'] == $this->_tpl_vars['gender_list']): ?>
-            <option selected><?php echo $this->_tpl_vars['gender_list']; ?>
+          <?php if ($_GET['gender'] == $this->_tpl_vars['genderList']): ?>
+            <option selected><?php echo $this->_tpl_vars['genderList']; ?>
 </option>
           <?php else: ?>
-            <option><?php echo $this->_tpl_vars['gender_list']; ?>
+            <option><?php echo $this->_tpl_vars['genderList']; ?>
 </option>
           <?php endif; ?>
         <?php endforeach; endif; unset($_from); ?>
@@ -133,23 +133,23 @@ if ($this->_foreach['gender_list']['total'] > 0):
      </th>
     <th>
       <div class="fleft">
-        <span onClick="sortBy(event);" class="country <?php if ($_GET['sort_element'] == 'country'): ?>sort <?php echo $_GET['sort']; ?>
+        <span onClick="sortBy(event);" class="country <?php if ($_GET['sortElement'] == 'country'): ?>sort <?php echo $_GET['sort']; ?>
 <?php endif; ?>" title="Click on title to sort by country">
           country:
         </span>
       </div>
       <select id="country" onChange="changeCreateria();" title="Select country from list">
         <option></option>
-        <?php $_from = $this->_tpl_vars['country_select_list']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['country_list'] = array('total' => count($_from), 'iteration' => 0);
-if ($this->_foreach['country_list']['total'] > 0):
-    foreach ($_from as $this->_tpl_vars['country_list']):
-        $this->_foreach['country_list']['iteration']++;
+        <?php $_from = $this->_tpl_vars['countrySelectList']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['countryList'] = array('total' => count($_from), 'iteration' => 0);
+if ($this->_foreach['countryList']['total'] > 0):
+    foreach ($_from as $this->_tpl_vars['countryList']):
+        $this->_foreach['countryList']['iteration']++;
 ?>
-          <?php if ($_GET['country'] == $this->_tpl_vars['country_list']): ?>                
-            <option selected><?php echo $this->_tpl_vars['country_list']; ?>
+          <?php if ($_GET['country'] == $this->_tpl_vars['countryList']): ?>                
+            <option selected><?php echo $this->_tpl_vars['countryList']; ?>
 </option>
           <?php else: ?>
-            <option><?php echo $this->_tpl_vars['country_list']; ?>
+            <option><?php echo $this->_tpl_vars['countryList']; ?>
 </option>
           <?php endif; ?>
         <?php endforeach; endif; unset($_from); ?>
@@ -162,16 +162,16 @@ if ($this->_foreach['country_list']['total'] > 0):
     </th>
     <th>
       <div class="fleft">
-        <span onClick="sortBy(event);" class="reg_time <?php if (! $_GET['sort_element'] || $_GET['sort_element'] == ''): ?>sort desc <?php endif; ?><?php if ($_GET['sort_element'] == 'reg_time'): ?>sort <?php echo $_GET['sort']; ?>
+        <span onClick="sortBy(event);" class="reg_time <?php if (! $_GET['sortElement'] || $_GET['sortElement'] == ''): ?>sort desc <?php endif; ?><?php if ($_GET['sortElement'] == 'reg_time'): ?>sort <?php echo $_GET['sort']; ?>
 <?php endif; ?>" title="Click on title to sort by date of registration">
           date          
         </span>
-        <span id="reg_time_diap" class="icon_search" title="Click here to set the range of registration date"></span>
+        <span id="regTimeDiap" class="iconSearch" title="Click here to set the range of registration date"></span>
 
-        <div id="reg_time_diap" class="date_diap<?php if (! $_GET['reg_time_ge'] && ! $_GET['reg_time_l']): ?> hide<?php endif; ?>">
-        <span class="data_input">>=<input type="text" id="reg_time_ge" size="8" <?php if ($_GET['reg_time_ge']): ?>value="<?php echo $_GET['reg_time_ge']; ?>
+        <div id="regTimeDiap" class="dateDiap<?php if (! $_GET['regTimege'] && ! $_GET['regTimel']): ?> hide<?php endif; ?>">
+        <span class="dataInput">>=<input type="text" id="regTimege" size="8" <?php if ($_GET['regTimege']): ?>value="<?php echo $_GET['regTimege']; ?>
 "<?php endif; ?>></span>
-        <span class="data_input"><<input type="text" id="reg_time_l" size="8" <?php if ($_GET['reg_time_l']): ?>value="<?php echo $_GET['reg_time_l']; ?>
+        <span class="dataInput"><<input type="text" id="regTimel" size="8" <?php if ($_GET['regTimel']): ?>value="<?php echo $_GET['regTimel']; ?>
 "<?php endif; ?>></span>
         <br>
         <input type="button" onClick="changeCreateria();" value="Submit">
@@ -182,7 +182,7 @@ if ($this->_foreach['country_list']['total'] > 0):
     <th>
       <div class="fleft" title="Insert data for search by user information: id, e-mail, phone number">
         user info:
-        <input type="text" id="user_info_search" onInput="user_info_search();" <?php if ($_GET['user_info']): ?>value="<?php echo $_GET['user_info']; ?>
+        <input type="text" id="userInfoSearch" onInput="userInfoSearch();" <?php if ($_GET['userInfo']): ?>value="<?php echo $_GET['userInfo']; ?>
 "<?php endif; ?> size="40" title="Insert data for search by user information: id, xe-mail, phone number">
       </div>
     </th>  
@@ -192,16 +192,16 @@ if ($this->_foreach['country_list']['total'] > 0):
       </div>
       <select id="platform" onChange="changeCreateria();" title="Select user`s registration type from list">
         <option></option>
-        <?php $_from = $this->_tpl_vars['platform_select_list']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['platform_list'] = array('total' => count($_from), 'iteration' => 0);
-if ($this->_foreach['platform_list']['total'] > 0):
-    foreach ($_from as $this->_tpl_vars['platform_list']):
-        $this->_foreach['platform_list']['iteration']++;
+        <?php $_from = $this->_tpl_vars['platformSelectList']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['platformList'] = array('total' => count($_from), 'iteration' => 0);
+if ($this->_foreach['platformList']['total'] > 0):
+    foreach ($_from as $this->_tpl_vars['platformList']):
+        $this->_foreach['platformList']['iteration']++;
 ?>
-          <?php if ($_GET['platform'] == $this->_tpl_vars['platform_list']): ?>
-            <option selected><?php echo $this->_tpl_vars['platform_list']; ?>
+          <?php if ($_GET['platform'] == $this->_tpl_vars['platformList']): ?>
+            <option selected><?php echo $this->_tpl_vars['platformList']; ?>
 </option>
           <?php else: ?>
-            <option><?php echo $this->_tpl_vars['platform_list']; ?>
+            <option><?php echo $this->_tpl_vars['platformList']; ?>
 </option>
           <?php endif; ?>
         <?php endforeach; endif; unset($_from); ?>
@@ -213,26 +213,26 @@ if ($this->_foreach['platform_list']['total'] > 0):
       </div>
       <select id="traffic" onChange="changeCreateria();" title="Select user`s traffic from list">
         <option></option>
-        <?php $_from = $this->_tpl_vars['traffic_select_list']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['traffic_list'] = array('total' => count($_from), 'iteration' => 0);
-if ($this->_foreach['traffic_list']['total'] > 0):
-    foreach ($_from as $this->_tpl_vars['traffic_list']):
-        $this->_foreach['traffic_list']['iteration']++;
+        <?php $_from = $this->_tpl_vars['trafficSelectList']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['trafficList'] = array('total' => count($_from), 'iteration' => 0);
+if ($this->_foreach['trafficList']['total'] > 0):
+    foreach ($_from as $this->_tpl_vars['trafficList']):
+        $this->_foreach['trafficList']['iteration']++;
 ?>
-          <?php if ($_GET['traffic'] == $this->_tpl_vars['traffic_list']): ?>
-            <option selected><?php echo $this->_tpl_vars['traffic_list']; ?>
+          <?php if ($_GET['traffic'] == $this->_tpl_vars['trafficList']): ?>
+            <option selected><?php echo $this->_tpl_vars['trafficList']; ?>
 </option>
           <?php else: ?>
-            <option><?php echo $this->_tpl_vars['traffic_list']; ?>
+            <option><?php echo $this->_tpl_vars['trafficList']; ?>
 </option>  
           <?php endif; ?>
         <?php endforeach; endif; unset($_from); ?>
       </select>
     </th>    
   </tr>
-  <?php $_from = $this->_tpl_vars['user_info']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['user_info'] = array('total' => count($_from), 'iteration' => 0);
-if ($this->_foreach['user_info']['total'] > 0):
+  <?php $_from = $this->_tpl_vars['userInfo']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['userInfo'] = array('total' => count($_from), 'iteration' => 0);
+if ($this->_foreach['userInfo']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['ui']):
-        $this->_foreach['user_info']['iteration']++;
+        $this->_foreach['userInfo']['iteration']++;
 ?>
   <tr>
        <td>
@@ -246,26 +246,26 @@ if ($this->_foreach['user_info']['total'] > 0):
        <td>
          <?php echo $this->_tpl_vars['ui']['country']; ?>
 
-       </td>
+       </td> 
        <td class="selectable">
-       <div class="rel_live unselectable">       
-        <span class="button_2" onClick="show_link(event,'live');" title="Click here to get autologin link or QRcode">LIVE link</span>
+       <div class="relLive unselectable link">       
+        <span class="button2" onClick="showLink(event,'live');" title="Click here to get autologin link or QRcode">LIVE link</span>
        </div>             
-        <span class="link live selectable" style="display:block">
-        <a href="https://<?php echo $this->_tpl_vars['sites_conf'][$this->_tpl_vars['ui']['site']]['live']; ?>
+        <span class="live unselectable">
+        <a href="https://<?php echo $this->_tpl_vars['sitesConf'][$this->_tpl_vars['ui']['siteId']]['domain']; ?>
 /site/autologin/key/<?php echo $this->_tpl_vars['ui']['key']; ?>
-" target="_blank" class="autologin_link">https://<?php echo $this->_tpl_vars['sites_conf'][$this->_tpl_vars['ui']['site']]['live']; ?>
+" target="_blank" class="autologinLink">https://<?php echo $this->_tpl_vars['sitesConf'][$this->_tpl_vars['ui']['siteId']]['domain']; ?>
 /site/autologin/key/<?php echo $this->_tpl_vars['ui']['key']; ?>
 </a>
        </span>
        </td>
        <td class="selectable">
-        <?php echo $this->_tpl_vars['ui']['reg_time']; ?>
+        <?php echo $this->_tpl_vars['ui']['regTime']; ?>
 
        </td>
-       <td> <br>
+       <td> <br><span class="selectable">
         E-mail: <?php echo $this->_tpl_vars['ui']['mail']; ?>
-
+</span>
         <br> 
         id: <?php echo $this->_tpl_vars['ui']['id']; ?>
 
@@ -276,8 +276,11 @@ if ($this->_foreach['user_info']['total'] > 0):
         Pass: <?php echo $this->_tpl_vars['ui']['password']; ?>
 
         <br>        
-        <a class="sync_link unselectable" onClick="sync('<?php echo $this->_tpl_vars['ui']['id']; ?>
-')">sync</a>
+        <a class="syncLink unselectable" onClick="syncVal = '<?php echo $this->_tpl_vars['ui']['id']; ?>
+' != '' && '<?php echo $this->_tpl_vars['ui']['site']; ?>
+' != '' ? '<?php echo $this->_tpl_vars['ui']['id']; ?>
+' : '<?php echo $this->_tpl_vars['ui']['mail']; ?>
+'; sync(syncVal);">sync</a>
        </td>
        <td class="unselectable">
          <?php echo $this->_tpl_vars['ui']['platform']; ?>

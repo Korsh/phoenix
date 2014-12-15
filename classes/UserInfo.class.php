@@ -6,34 +6,33 @@ class UserInfo
 {
     var $db;
     var $ch;
-    var $main_site;
-    var $dc_conf;
+    var $mainSite;
+    var $dcConf;
     var $dc;
-    var $login_url;
-    var $find_url;
+    var $loginUrl;
+    var $findUrl;
     var $type;
     var $login;
     var $pass;
-    var $site_conf;
-    var $config = array("dc" => "pc", "site" => "my.ufins", "login_url" => ".com/admin/base/login", "find_url" => ".com/admin/user/find", "login" => "arzhanov", "pass" => "CiWacMadJej9", "type" => "phoenix");
+    var $siteConf;
 
     function UserInfo($DBH)
     {
         $this->db        = $DBH;
-        $this->admin_url = 'my.ufins.com/user/find';
+        $this->adminUrl = 'my.ufins.com/user/find';
         $this->dc        = 'pc';
-        $this->dc_conf   = array(
+        $this->dcConf   = array(
             "pc",
             "lg"
         );
     }
 
-    function syncUserInfo($createria, $config)
+    function syncUserInfo($createria, $dc)
     {
-        $this->setDc($this->config);
+        $this->setDc($dc);
         $this->adminLogin();
-        curl_setopt($this->ch, CURLOPT_URL, "https://" . $this->main_site . $this->find_url . '/?FindUserForm[user]=' . urlencode($createria));
-        $find_arr = array(
+        curl_setopt($this->ch, CURLOPT_URL, "https://" . $this->mainSite . $this->findUrl . '/?FindUserForm[user]=' . urlencode($createria));
+        $findArr = array(
             "YII_CSRF_TOKEN" => "",
             "FindUserForm" => array(
                 "user" => $createria
@@ -46,130 +45,142 @@ class UserInfo
         $elements = $html->get(".grid-view")->toArray();
 
         $count  = 0;
-        $id_arr = array();
+        $idArr = array();
         for ($i = 0; $i < sizeof($elements); $i++) {
             if (isset($elements[$i]['table'][0]['tbody'][0]['tr']['td'])) {
                 if (isset($elements[$i]['table'][0]['tbody'][0]['tr']['td'][3])) {
-                    $autologin_link = $elements[$i]['table'][0]['tbody'][0]['tr']['td'][3]['a']['href'];
-                    preg_match_all("/[\S]+userId=([0-9a-z]+)/i", $autologin_link, $matches);
+                    $autologinLink = $elements[$i]['table'][0]['tbody'][0]['tr']['td'][3]['a']['href'];
+                    preg_match_all("/[\S]+userId=([0-9a-z]+)/i", $autologinLink, $matches);
                     if ($matches[1][0] != '') {
-                        $id_arr[] = trim($matches[1][0]);
+                        $idArr[] = trim($matches[1][0]);
                     }
                 }
             } else {
                 for ($y = 0; $y < sizeof($elements[$i]['table'][0]['tbody'][0]['tr']); $y++) {
                     if (isset($elements[$i]['table'][0]['tbody'][0]['tr'][$y]['td'][3])) {
-                        $autologin_link = $elements[$i]['table'][0]['tbody'][0]['tr'][$y]['td'][3]['a']['href'];
-                        preg_match_all("/[\S]+userId=([0-9a-z]+)/i", $autologin_link, $matches);
+                        $autologinLink = $elements[$i]['table'][0]['tbody'][0]['tr'][$y]['td'][3]['a']['href'];
+                        preg_match_all("/[\S]+userId=([0-9a-z]+)/i", $autologinLink, $matches);
                         if (!empty($matches[1][0]) && $matches[1][0] != '') {
-                            $id_arr[] = trim($matches[1][0]);
+                            $idArr[] = trim($matches[1][0]);
                         }
                     }
                 }
             }
         }
 
-        for ($i = 0; $i < sizeof($id_arr); $i++) {
-            curl_setopt($this->ch, CURLOPT_URL, "https://" . $this->main_site . '.com/user/find?user_id=' . $id_arr[$i]);
-            $find_arr = array(
-                "YII_CSRF_TOKEN" => "",
-                "FindUserForm" => array(
-                    "user" => $id_arr[$i]
-                )
-            );
+        if(!empty($idArr)) {
+            for ($i = 0; $i < sizeof($idArr); $i++) {
+                curl_setopt($this->ch, CURLOPT_URL, "https://" . $this->mainSite . '.com/user/find?user_id=' . $idArr[$i]);
+                $findArr = array(
+                    "YII_CSRF_TOKEN" => "",
+                    "FindUserForm" => array(
+                        "user" => $idArr[$i]
+                    )
+                );
 
-            curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
-            $out      = curl_exec($this->ch);
-            $html     = new nokogiri($out);
-            $elements = $html->get("#yw1")->toArray();
+                curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
+                $out      = curl_exec($this->ch);
+                $html     = new nokogiri($out);
+                $elements = $html->get("#yw1")->toArray();
 
-            $user_info['id']          = isset($elements[0]['tr'][0]['td'][0]['#text']) ? strtolower($elements[0]['tr'][0]['td'][0]['#text']) : null;
-            $user_info['mail']        = isset($elements[0]['tr'][2]['td'][0]['#text']) ? strtolower($elements[0]['tr'][2]['td'][0]['#text']) : null;
-            $user_info['login']       = isset($elements[0]['tr'][4]['td'][0]['#text']) ? strtolower($elements[0]['tr'][4]['td'][0]['#text']) : null;
-            $user_info['password']    = isset($elements[0]['tr'][5]['td'][0]['#text']) ? $elements[0]['tr'][5]['td'][0]['#text'] : null;
-            $user_info['key']         = isset($elements[0]['tr'][6]['td'][0]['#text']) ? strtolower($elements[0]['tr'][6]['td'][0]['#text']) : null;
-            $user_info['site_id']     = isset($elements[0]['tr'][7]['td'][0]['#text']) ? strtolower($elements[0]['tr'][7]['td'][0]['#text']) : null;
-            $user_info['gender']      = isset($elements[0]['tr'][9]['td'][0]['#text']) ? strtolower($elements[0]['tr'][9]['td'][0]['#text']) : null;
-            $user_info['orientation'] = isset($elements[0]['tr'][10]['td'][0]['#text']) ? strtolower($elements[0]['tr'][10]['td'][0]['#text']) : null;
-            $user_info['fname']       = isset($elements[0]['tr'][11]['td'][0]['#text']) ? strtolower($elements[0]['tr'][11]['td'][0]['#text']) : null;
-            $user_info['lname']       = isset($elements[0]['tr'][12]['td'][0]['#text']) ? strtolower($elements[0]['tr'][12]['td'][0]['#text']) : null;
-            $user_info['country']     = isset($elements[0]['tr'][13]['td'][0]['#text']) ? strtolower($elements[0]['tr'][13]['td'][0]['#text']) : null;
-            $user_info['birthday']    = isset($elements[0]['tr'][14]['td'][0]['#text']) ? strtolower($elements[0]['tr'][14]['td'][0]['#text']) : null;
-            $user_info['reg_time']    = isset($elements[0]['tr'][15]['td'][0]['#text']) ? $elements[0]['tr'][15]['td'][0]['#text'] : null;
-            $user_info['active']      = isset($elements[0]['tr'][21]['td'][0]['#text']) ? strtolower($elements[0]['tr'][21]['td'][0]['#text']) : null;
-            $user_info['traffic']     = isset($elements[0]['tr'][29]['td'][0]['#text']) || strtolower($elements[0]['tr'][29]['td'][0]['#text']) != 'undefined' ? strtolower($elements[0]['tr'][26]['td'][0]['#text']) : strtolower($elements[0]['tr'][27]['td'][0]['#text']);
-            $user_info['platform']    = isset($elements[0]['tr'][31]['td'][0]['#text']) ? strtolower($elements[0]['tr'][31]['td'][0]['#text']) : null;
-            $user_info['ll']          = isset($elements[0]['tr'][16]['td'][0]['#text']) && isset($elements[0]['tr'][17]['td'][0]['#text']) ? strtolower($elements[0]['tr'][16]['td'][0]['#text']) . "," . strtolower($elements[0]['tr'][17]['td'][0]['#text']) : null;
-            $user_info['searchable']  = isset($elements[0]['tr'][36]['td'][0]['#text']) && strtolower($elements[0]['tr'][36]['td'][0]['#text']) == "yes" ? 1 : 0;
-            $elements                 = $html->get(".user-block")->toArray();
-            $user_info['confirmed']   = !empty($elements[3]['h5'][0]['span'][0]['#text']) && strtolower($elements[3]['h5'][0]['span'][0]['#text']) == "confirmed" ? 1 : 0;
+                $userInfo['id']          = isset($elements[0]['tr'][0]['td'][0]['#text']) ? strtolower($elements[0]['tr'][0]['td'][0]['#text']) : null;
+                $userInfo['mail']        = isset($elements[0]['tr'][2]['td'][0]['#text']) ? strtolower($elements[0]['tr'][2]['td'][0]['#text']) : null;
+                $userInfo['login']       = isset($elements[0]['tr'][4]['td'][0]['#text']) ? strtolower($elements[0]['tr'][4]['td'][0]['#text']) : null;
+                $userInfo['password']    = isset($elements[0]['tr'][5]['td'][0]['#text']) ? $elements[0]['tr'][5]['td'][0]['#text'] : null;
+                $userInfo['key']         = isset($elements[0]['tr'][6]['td'][0]['#text']) ? strtolower($elements[0]['tr'][6]['td'][0]['#text']) : null;
+                $userInfo['siteId']     = isset($elements[0]['tr'][7]['td'][0]['#text']) ? strtolower($elements[0]['tr'][7]['td'][0]['#text']) : null;
+                $userInfo['gender']      = isset($elements[0]['tr'][9]['td'][0]['#text']) ? strtolower($elements[0]['tr'][9]['td'][0]['#text']) : null;
+                $userInfo['orientation'] = isset($elements[0]['tr'][10]['td'][0]['#text']) ? strtolower($elements[0]['tr'][10]['td'][0]['#text']) : null;
+                $userInfo['fname']       = isset($elements[0]['tr'][11]['td'][0]['#text']) ? strtolower($elements[0]['tr'][11]['td'][0]['#text']) : null;
+                $userInfo['lname']       = isset($elements[0]['tr'][12]['td'][0]['#text']) ? strtolower($elements[0]['tr'][12]['td'][0]['#text']) : null;
+                $userInfo['country']     = isset($elements[0]['tr'][13]['td'][0]['#text']) ? strtolower($elements[0]['tr'][13]['td'][0]['#text']) : null;
+                $userInfo['birthday']    = isset($elements[0]['tr'][14]['td'][0]['#text']) ? strtolower($elements[0]['tr'][14]['td'][0]['#text']) : null;
+                $userInfo['regTime']    = isset($elements[0]['tr'][20]['td'][0]['#text']) ? $elements[0]['tr'][20]['td'][0]['#text'] : null;
+                $userInfo['active']      = isset($elements[0]['tr'][26]['td'][0]['#text']) ? strtolower($elements[0]['tr'][26]['td'][0]['#text']) : null;
+                $userInfo['traffic']     = isset($elements[0]['tr'][34]['td'][0]['#text']) || strtolower($elements[0]['tr'][34]['td'][0]['#text']) != 'undefined' ? strtolower($elements[0]['tr'][34]['td'][0]['#text']) : strtolower($elements[0]['tr'][35]['td'][0]['#text']);
+                $userInfo['platform']    = isset($elements[0]['tr'][36]['td'][0]['#text']) ? strtolower($elements[0]['tr'][36]['td'][0]['#text']) : null;
+                $userInfo['ll']          = isset($elements[0]['tr'][21]['td'][0]['#text']) && isset($elements[0]['tr'][22]['td'][0]['#text']) ? strtolower($elements[0]['tr'][21]['td'][0]['#text']) . "," . strtolower($elements[0]['tr'][22]['td'][0]['#text']) : null;
+            
+            /*$userInfo['chats_count'] = isset($elements[0]['tr'][28]['td'][0]['a'][0]['#text']) ? $elements[0]['tr'][28]['td'][0]['a'][0]['#text'] : null;
+            preg_match_all("/([0-9]+)/", $user_info['chats_count'], $matches);
+            $userInfo['chats_count'] = trim($matches[1][0]);*/
+            $userInfo['searchable']  = isset($elements[0]['tr'][36]['td'][0]['#text']) && strtolower($elements[0]['tr'][36]['td'][0]['#text']) == "yes" ? 1 : 0;
+                $elements                 = $html->get(".user-block")->toArray();
+                $userInfo['confirmed']   = !empty($elements[3]['h5'][0]['span'][0]['#text']) && strtolower($elements[3]['h5'][0]['span'][0]['#text']) == "confirmed" ? 1 : 0;
 
-            curl_setopt($this->ch, CURLOPT_URL, "https://" . $this->main_site . '.com/user/edit?user_id=' . $user_info['id']);
-            curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
-            $out      = curl_exec($this->ch);
-            $html     = new nokogiri($out);
-            $elements = $html->get("#edit-user-form")->toArray();
-            preg_match('([a-z]{5}[0-9]{5})', $user_info['login'], $matches);
-            if (sizeof($elements) > 0) {
-                if ($user_info['confirmed'] == 0 && empty($matches)) {
-                    $inputs = !empty($elements[0]['input']) ? $elements[0]['input'] : null;
-                    $spans  = !empty($elements[0]['span']) ? $elements[0]['span'] : null;
-
-                    $characters = 'abcdefghijklmnoprstuvwxyz';
-                    $randstring = '';
-                    for ($i = 0; $i < 5; $i++) {
-                        $randstring .= $characters[rand(0, strlen($characters))];
-                    }
-                    $screenname = $randstring . substr(time(), -5);
-
-                    if (isset($elements[0])) {
+                curl_setopt($this->ch, CURLOPT_URL, "https://" . $this->mainSite . '.com/user/edit?user_id=' . $userInfo['id']);
+                curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
+                $out      = curl_exec($this->ch);
+                $html     = new nokogiri($out);
+                $elements = $html->get("#edit-user-form")->toArray();
+                preg_match('([a-z]{5}[0-9]{5})', $userInfo['login'], $matches);
+                if (sizeof($elements) > 0) {
+                    if ($userInfo['confirmed'] == 0 && empty($matches)) {
                         $inputs = !empty($elements[0]['input']) ? $elements[0]['input'] : null;
-                        for ($i = 0; $i < sizeof($inputs); $i++) {
-                            if ($inputs[$i]['name'] == 'UserAdminForm[login]') {
-                                $inputs[$i]['value'] = $screenname;
-                                $user_info['login']  = $screenname;
-                            }
-                            $arr[$inputs[$i]['name']] = $inputs[$i]['value'];
+                        $spans  = !empty($elements[0]['span']) ? $elements[0]['span'] : null;
+
+                        $characters = 'abcdefghijklmnoprstuvwxyz';
+                        $randstring = '';
+                        for ($i = 0; $i < 5; $i++) {
+                            $randstring .= $characters[rand(0, strlen($characters))];
                         }
-                    }
-                    if (isset($elements[0])) {
-                        $spans = !empty($elements[0]['span']) ? $elements[0]['span'] : null;
-                        for ($i = 0; $i < sizeof($spans); $i++) {
-                            $curr_select = $spans[$i]['select'][0];
-                            for ($y = 0; $y < sizeof($curr_select['option']); $y++) {
-                                if (!empty($curr_select['option'][$y]['selected'])) {
-                                    $arr[$curr_select['name']] = $curr_select['option'][$y]['value'];
+                        $screenname = $randstring . substr(time(), -5);
+
+                        if (isset($elements[0])) {
+                            $inputs = !empty($elements[0]['input']) ? $elements[0]['input'] : null;
+                            for ($i = 0; $i < sizeof($inputs); $i++) {
+                                if ($inputs[$i]['name'] == 'UserAdminForm[login]') {
+                                    $inputs[$i]['value'] = $screenname;
+                                    $userInfo['login']  = $screenname;
+                                }
+                                $arr[$inputs[$i]['name']] = $inputs[$i]['value'];
+                            }
+                        }
+                        if (isset($elements[0])) {
+                            $spans = !empty($elements[0]['span']) ? $elements[0]['span'] : null;
+                            for ($i = 0; $i < sizeof($spans); $i++) {
+                                $currSelect = $spans[$i]['select'][0];
+                                for ($y = 0; $y < sizeof($currSelect['option']); $y++) {
+                                    if (!empty($currSelect['option'][$y]['selected'])) {
+                                        $arr[$currSelect['name']] = $currSelect['option'][$y]['value'];
+                                    }
                                 }
                             }
                         }
+
+                        $arr['UserAdminForm[location]'] = '';
+                        $arr['UserAdminForm[country]']  = '';
+                        curl_setopt($this->ch, CURLOPT_URL, "https://" . $this->mainSite . '.com/user/edit?user_id=' . $userInfo['id']);
+                        curl_setopt($this->ch, CURLOPT_POST, true);
+                        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
+
+                        curl_setopt($this->ch, CURLOPT_POSTFIELDS, http_build_query($arr));
+                        $out = curl_exec($this->ch);
                     }
-
-                    $arr['UserAdminForm[location]'] = '';
-                    $arr['UserAdminForm[country]']  = '';
-                    curl_setopt($this->ch, CURLOPT_URL, "https://" . $this->main_site . '.com/user/edit?user_id=' . $user_info['id']);
-                    curl_setopt($this->ch, CURLOPT_POST, true);
-                    curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
-                    curl_setopt($this->ch, REFERER, "https://my.ufins.com/user/edit?user_id=3dc38936fd1b11e3a082d4bed9a94a8f");
-
-                    curl_setopt($this->ch, CURLOPT_POSTFIELDS, http_build_query($arr));
-                    $out = curl_exec($this->ch);
                 }
+                curl_setopt($this->ch, CURLOPT_URL, "https://my.ufins.com/user/markTester?userId=".$userInfo['id']);
+                curl_exec($this->ch);
+                var_dump($userInfo);
+                if(!empty($userInfo)) {
+                    $this->saveSyncUser($userInfo);
+                } else {
+                    $this->syncDc($createria);
+                }
+                
             }
-            //curl_setopt($this->ch, CURLOPT_URL, "https://my.ufins.com/user/markTester?userId=".$user_info['id']);
-            //curl_exec($this->ch);
-
-            var_dump($user_info);
-            $this->saveSyncUser($user_info);
+        } else {
+            $this->syncDc($createria);
         }
-        return sizeof($id_arr);
+
+        return sizeof($idArr);
     }
 
     function setDc($config)
     {
         $this->dc        = $config['dc'];
-        $this->main_site = $config['site'];
-        $this->login_url = $config['login_url'];
-        $this->find_url  = $config['find_url'];
+        $this->mainSite = $config['site'];
+        $this->loginUrl = $config['loginUrl'];
+        $this->findUrl  = $config['findUrl'];
         $this->type      = $config['type'];
         $this->login     = $config['login'];
         $this->pass      = $config['pass'];
@@ -178,7 +189,7 @@ class UserInfo
     function adminLogin()
     {
         $this->ch = curl_init();
-        $post_arr = array(
+        $postArr = array(
             "AdminLoginForm" => array(
                 "login" => $this->login,
                 "password" => $this->pass
@@ -187,16 +198,135 @@ class UserInfo
             "yt0" => ""
         );
 
-        curl_setopt($this->ch, CURLOPT_URL, "https://" . $this->main_site . $this->login_url);
+        curl_setopt($this->ch, CURLOPT_URL, "https://" . $this->mainSite . $this->loginUrl);
         curl_setopt($this->ch, CURLOPT_COOKIEJAR, 'cookie.txt');
         curl_setopt($this->ch, CURLOPT_COOKIEFILE, 'cookie.txt');
         curl_setopt($this->ch, CURLOPT_VERBOSE, 0);
         curl_setopt($this->ch, CURLOPT_POST, true);
-        curl_setopt($this->ch, CURLOPT_POSTFIELDS, http_build_query($post_arr));
+        curl_setopt($this->ch, CURLOPT_POSTFIELDS, http_build_query($postArr));
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
         $out = curl_exec($this->ch);
     }
 
+    function updateProxy($proxyConf)
+    {
+        try {
+        $updateProxyConfigQuery = $this->db->prepare("
+            INSERT INTO 
+                `proxy` (
+                `id`,
+                `domain`,
+                `port`,
+                `ip_address`,
+                `country_code`,
+                `country_name`,
+                `region_name`,
+                `city_name`,
+                `zip_code`,
+                `latitude`,
+                `longitude`,
+                `time_zone`,
+                `enable`,
+                `country`
+            )
+            VALUES (
+                default,
+                :domain,
+                :port,
+                :ipAddress,
+                :countryCode,
+                :countryName,
+                :regionName,
+                :cityName,
+                :zipCode,
+                :latitude,
+                :longitude,
+                :timeZone,
+                :enable,
+                :country
+            )
+            ON DUPLICATE KEY UPDATE
+                `domain` = :domain2,
+                `port`= :port2,
+                `ip_address` = :ipAddress2,
+                `country_code` = :countryCode2,
+                `country_name` = :countryName2,
+                `region_name` = :regionName2,
+                `city_name` = :cityName2,
+                `zip_code` = :zipCode2,
+                `latitude` = :latitude2,
+                `longitude` = :longitude2,
+                `time_zone` = :timeZone2,
+                `enable` = :enable2,
+                `country` = :country2
+        ;");
+        foreach ($proxyConf as $key => $item) {
+            if ($key != 'id') {
+                $this->bindMultiple($updateProxyConfigQuery, array(
+                    $key,
+                    $key . '2'
+                ), $item);
+            } else {
+                $updateProxyConfigQuery->bindValue(':id', $item);
+            }
+        }
+        $updateProxyConfigQuery->execute();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            //file_put_contents('../PDOErrors.txt', $e->getMessage(), FILE_APPEND);
+        }
+    }
+    
+    function getProxyConfig()
+    {
+        try {
+            $usedEmailQuery = $this->db->query("
+            SELECT 
+                `id`,
+                `ip_address`,
+                `country_code`,
+                `country_name`,
+                `region_name`,
+                `city_name`,
+                `zip_code`,
+                `latitude`,
+                `longitude`,
+                `time_zone`,
+                `domain`,
+                `port`,
+                `country`,
+                `enable`
+        
+        FROM
+          `proxy`
+        ;");
+        }
+        catch (PDOException $e) {
+            echo $e->getMessage();
+            file_put_contents('../PDOErrors.txt', $e->getMessage(), FILE_APPEND);
+        }
+        if ($usedEmailQuery->rowCount() > 0) {
+            while ($row = $usedEmailQuery->fetch()) {
+                $proxy[$row['country']]['id'] = $row['id'];
+                $proxy[$row['country']]['ipAddress'] = $row['ip_address'];
+                $proxy[$row['country']]['countryCode'] = $row['country_code'];
+                $proxy[$row['country']]['countryName'] = $row['country_name'];
+                $proxy[$row['country']]['regionName'] = $row['region_name'];
+                $proxy[$row['country']]['cityName'] = $row['city_name'];
+                $proxy[$row['country']]['zipCode'] = $row['zip_code'];
+                $proxy[$row['country']]['latitude'] = $row['latitude'];
+                $proxy[$row['country']]['longitude'] = $row['longitude'];
+                $proxy[$row['country']]['timeShift'] = $row['time_zone'];
+                $proxy[$row['country']]['domain'] = $row['domain'];
+                $proxy[$row['country']]['port'] = $row['port'];
+                $proxy[$row['country']]['enable'] = $row['enable'];
+            }
+            return $proxy;
+        } else {
+            return false;
+        }
+    }
+    
     function syncSitesConfig($conf)
     {
         
@@ -212,12 +342,24 @@ class UserInfo
 
         $html     = new nokogiri($out);
         $elements = $html->get(".grid-view")->toArray();
+        for ($i = 0; $i < 3; $i++) {
+            $id = $elements[$i]['id'];
+            switch ($id) {
+                case "yw0":
+                    $siteConf['company'] = "PMMedia";
+                    break;
+                case "yw1":
+                    $siteConf['company'] = "Together Network";
+                    break;
+                case "yw2":
+                    $siteConf['company'] = "PMMedia MS";
+                    break;
+            }
 
-        for ($i = 0; $i < 1; $i++) {
             for ($y = 0; $y < sizeof($elements[$i]['table'][0]['tbody'][0]['tr']); $y++) {
-                $site_conf['site_id'] = $elements[$i]['table'][0]['tbody'][0]['tr'][$y]['td'][2]['#text'];
+                $siteConf['siteId'] = $elements[$i]['table'][0]['tbody'][0]['tr'][$y]['td'][2]['#text'];
 
-                curl_setopt($this->ch, CURLOPT_URL, 'https://my.ufins.com/admin/user/sites/view/' . $site_conf['site_id']);
+                curl_setopt($this->ch, CURLOPT_URL, 'https://my.ufins.com/admin/user/sites/view/' . $siteConf['siteId']);
                 curl_setopt($this->ch, CURLOPT_COOKIEJAR, 'cookie.txt');
                 curl_setopt($this->ch, CURLOPT_COOKIEFILE, 'cookie.txt');
                 curl_setopt($this->ch, CURLOPT_VERBOSE, 0);
@@ -227,62 +369,68 @@ class UserInfo
                     'X-Requested-With: XMLHttpRequest'
                 ));
 
-                $json_answer = json_decode(curl_exec($this->ch));
+                $jsonAnswer = json_decode(curl_exec($this->ch));
 
-                $site_conf['site_name'] = strtolower($json_answer->{$site_conf['site_id']}->{'siteName'});
-                if (!is_object($json_answer->{$site_conf['site_id']}->{'skin'})) {
-                    $site_conf['skin'] = $json_answer->{$site_conf['site_id']}->{'skin'};
-                } elseif (!is_object($json_answer->{$site_conf['site_id']}->{'skin'}->{'default'})) {
-                    $site_conf['skin'] = $json_answer->{$site_conf['site_id']}->{'skin'}->{'default'};
+                $siteConf['siteName'] = strtolower($jsonAnswer->{$siteConf['siteId']}->{'siteName'});
+                if (!is_object($jsonAnswer->{$siteConf['siteId']}->{'skin'})) {
+                    $siteConf['skin'] = $jsonAnswer->{$siteConf['siteId']}->{'skin'};
+                } elseif (!is_object($jsonAnswer->{$siteConf['siteId']}->{'skin'}->{'default'})) {
+                    $siteConf['skin'] = $jsonAnswer->{$siteConf['siteId']}->{'skin'}->{'default'};
                 } else {
-                    $site_conf['skin'] = '';
+                    $siteConf['skin'] = '';
                 }
-                $site_conf['company_name'] = $json_answer->{$site_conf['site_id']}->{'companyName'};
-                $site_conf['site_url']     = strtolower($json_answer->{$site_conf['site_id']}->{'siteUrl'});
-                $site_conf['site_domain']  = strtolower($json_answer->{$site_conf['site_id']}->{'siteDomain'});
+                $siteConf['companyName'] = $jsonAnswer->{$siteConf['siteId']}->{'companyName'};
+                $siteConf['siteUrl']     = strtolower($jsonAnswer->{$siteConf['siteId']}->{'siteUrl'});
+                $siteConf['siteDomain']  = strtolower($jsonAnswer->{$siteConf['siteId']}->{'siteDomain'});
 
-                echo '<pre>' . print_r($site_conf, true) . '</pre>';
-                if ($site_conf['skin'] != 'lgw.vanilla' && $site_conf['skin'] != 'lgw.vermillion' && $site_conf['skin'] != 'lgw.turquoise') {
+                var_dump($siteConf);
+                $newSites = array();
+                
+                if (($siteConf['skin'] != 'lgw.vanilla' && $siteConf['skin'] != 'lgw.vermillion' && $siteConf['skin'] != 'lgw.turquoise')
+                /*&& (($siteConf['companyName'] == "Alcuda Limited" || $siteConf['companyName'] == "Cisca Services Ltd" || $siteConf['companyName'] == "Enedina Limited") || ($siteConf['companyName'] == "pmMedia"  && in_array($siteConf['siteDomain'],$newSites)))*/) {
                     try {
-                        $update_site_config_query = $this->db->prepare("
+                        $updateSiteConfigQuery = $this->db->prepare("
                             INSERT INTO 
                                 `sites_config` (
                                     `site_name`,
                                     `site_id`,
                                     `company_name`,
+                                    `company`,
                                     `site_url`,
                                     `site_domain`,
                                     `skin`
                                 )
                                 VALUES (
-                                    :site_name,
-                                    :site_id,
-                                    :company_name,
-                                    :site_url,
-                                    :site_domain,
+                                    :siteName,
+                                    :siteId,
+                                    :companyName,
+                                    :company,
+                                    :siteUrl,
+                                    :siteDomain,
                                     :skin
                                 )
                             ON DUPLICATE KEY UPDATE            
-                                `site_name` = :site_name2,
-                                `company_name` = :company_name2,
-                                `site_url` = :site_url2,
-                                `site_domain` = :site_domain2,
+                                `site_name` = :siteName2,
+                                `company_name` = :companyName2,
+                                `company` = :company2,
+                                `site_url` = :siteUrl2,
+                                `site_domain` = :siteDomain2,
                                 `skin` = :skin2
                         ;");
                         
-                        foreach ($site_conf as $key => $item) {
-                            if ($key != 'site_id') {
-                                $this->bindMultiple($update_site_config_query, array(
+                        foreach ($siteConf as $key => $item) {
+                            if ($key != 'siteId') {
+                                $this->bindMultiple($updateSiteConfigQuery, array(
                                     $key,
                                     $key . '2'
                                 ), $item);
                             } else {
-                                $update_site_config_query->bindValue(':site_id', $item);
+                                $updateSiteConfigQuery->bindValue(':siteId', $item);
                             }
                         }
                         
                         
-                        $update_site_config_query->execute();
+                        $updateSiteConfigQuery->execute();
                     }
                     catch (PDOException $e) {
                         echo $e->getMessage();
@@ -295,10 +443,10 @@ class UserInfo
         
     }
     
-    function saveTmpUser($user_info)
+    function saveTmpUser($userInfo)
     {
         try {
-            $insert_tmp_user_info_query = $this->db->prepare("   
+            $insertTmpUserInfoQuery = $this->db->prepare("   
                 INSERT INTO 
                     `temp_profiles`(
                         email) 
@@ -306,9 +454,10 @@ class UserInfo
                     :email            
                 )
             ;");
-            $insert_tmp_user_info_query->bindValue(':email', $user_info);
+            var_dump($userInfo);
+            $insertTmpUserInfoQuery->bindValue(':email', $userInfo);
             
-            $insert_tmp_user_info_query->execute();
+            $insertTmpUserInfoQuery->execute();
             return true;
         }
         catch (PDOException $e) {
@@ -318,12 +467,12 @@ class UserInfo
         }
     }
     
-    function saveSyncUser($user_info)
+    function saveSyncUser($userInfo)
     {
-        if (isset($user_info)) {
-            if ($user_info['mail'] != 'adghcvnhtg@outlook.com') {
+        if (isset($userInfo)) {
+            if ($userInfo['mail'] != 'adghcvnhtg@outlook.com') {
                 try {
-                        $insert_user_info_query = $this->db->prepare("
+                        $insertUserInfoQuery = $this->db->prepare("
                             INSERT INTO 
                                 `profile` (
                                     `id`,
@@ -344,7 +493,8 @@ class UserInfo
                                     `platform`,
                                     `ll`,
                                     `searchable`,
-                                    `confirmed`
+                                    `confirmed`,
+                                    `test`
                                 )
                                 VALUES (
                                     :id,
@@ -352,60 +502,63 @@ class UserInfo
                                     :login,
                                     :password,
                                     :key,
-                                    :site_id,
+                                    :siteId,
                                     :gender,
                                     :orientation,
                                     :fname,
                                     :lname,
                                     :country,
                                     :birthday,
-                                    :reg_time,
+                                    :regTime,
                                     :active,
                                     :traffic,
                                     :platform,
                                     :ll,
                                     :searchable,
-                                    :confirmed
+                                    :confirmed,
+                                    1
                                 )
                             ON DUPLICATE KEY UPDATE            
                                 `mail` = :mail2,
                                 `login` = :login2,
                                 `password` = :password2,
                                 `key` = :key2,
-                                `site_id` = :site_id2,
+                                `site_id` = :siteId2,
                                 `gender` = :gender2,
                                 `orientation` = :orientation2,
                                 `fname` = :fname2,
                                 `lname` = :lname2,
                                 `country` = :country2,
                                 `birthday` = :birthday2,
-                                `reg_time` = :reg_time2,
+                                `reg_time` = :regTime2,
                                 `active` = :active2,
                                 `traffic` = :traffic2,
                                 `platform` = :platform2,
                                 `ll` = :ll2,
                                 `searchable` = :searchable2,
-                                `confirmed` = :confirmed2
+                                `confirmed` = :confirmed2,
+                                `test` = 1
                           ;");
 
-                    foreach ($user_info as $key => $item) {
+                    foreach ($userInfo as $key => $item) {
                         if ($key != 'id') {
-                            $this->bindMultiple($insert_user_info_query, array(
+                            $this->bindMultiple($insertUserInfoQuery, array(
                                 $key,
                                 $key . '2'
                             ), $item);
                         } else {
-                            $insert_user_info_query->bindValue(':id', $item);
+                            $insertUserInfoQuery->bindValue(':id', $item);
                         }
                     }
 
-                    $insert_user_info_query->execute();
-                    $this->syncDc($user_info['mail']);
+                    $insertUserInfoQuery->execute();
+                    $this->syncDc($userInfo['mail']);
                     return true;
                 }
                 catch (PDOException $e) {
                     echo $e->getMessage();
                     file_put_contents('../PDOErrors.txt', $e->getMessage(), FILE_APPEND);
+                    $this->syncDc($userInfo['mail']);
                     return false;
                 }
             } else {
@@ -421,27 +574,55 @@ class UserInfo
         }
     }
 
-    function getUsersForSync($dc)
+    function getUsersForMarkAsTest()
     {
         try {
-            $used_email_query = $this->db->query("
+            $testEmailQuery = $this->db->query("
                 SELECT 
                     `mail`
                 FROM
                     `profile`
                 WHERE
-                    `platform` = '0'
-                LIMIT 25
+                    `test` IS NULL
+                AND
+                    `reg_time` < (NOW() - INTERVAL 2 WEEK)
+                LIMIT 50
             ;");
         }
         catch (PDOException $e) {
             echo $e->getMessage();
             file_put_contents('../PDOErrors.txt', $e->getMessage(), FILE_APPEND);
         }
-        if ($used_email_query->rowCount() > 0) {
+        if ($testEmailQuery->rowCount() > 0) {
             
-            while ($row = $used_email_query->fetch()) {
+            while ($row = $testEmailQuery->fetch()) {
                 $users[] = $row['mail'];
+            }
+            return $users;
+        } else {
+            return false;
+        }
+    }
+    
+    function getUsersForSync()
+    {
+        try {
+            $usedEmailQuery = $this->db->query("
+                SELECT 
+                    `email`
+                FROM
+                    `temp_profiles`
+                LIMIT 500
+            ;");
+        }
+        catch (PDOException $e) {
+            echo $e->getMessage();
+            file_put_contents('../PDOErrors.txt', $e->getMessage(), FILE_APPEND);
+        }
+        if ($usedEmailQuery->rowCount() > 0) {
+            
+            while ($row = $usedEmailQuery->fetch()) {
+                $users[] = $row['email'];
             }
             return $users;
         } else {
@@ -452,7 +633,7 @@ class UserInfo
     function getSitesConfig()
     {
         try {
-            $get_sites_config_query = $this->db->query("
+            $getSitesConfigQuery = $this->db->query("
                 SELECT
                     `site_name`,
                     `site_id`,
@@ -467,15 +648,14 @@ class UserInfo
             echo $e->getMessage();
             file_put_contents('../PDOErrors.txt', $e->getMessage(), FILE_APPEND);
         }
-        if ($get_sites_config_query->rowCount() > 0) {
-            while ($row = $get_sites_config_query->fetch()) {
-                $sites_config[$row['site_id']]['live']         = $row['site_url'];
-                $sites_config[$row['site_id']]['site_name']    = $row['site_name'];
-                $sites_config[$row['site_id']]['domain']       = $row['site_domain'];
-                $sites_config[$row['site_id']]['company_name'] = $row['company_name'];
+        if ($getSitesConfigQuery->rowCount() > 0) {
+            while ($row = $getSitesConfigQuery->fetch()) {
+                $sitesConfig[$row['site_id']]['live']         = $row['site_url'];
+                $sitesConfig[$row['site_id']]['siteName']    = $row['site_name'];
+                $sitesConfig[$row['site_id']]['domain']       = $row['site_domain'];
+                $sitesConfig[$row['site_id']]['companyName']  = $row['company_name'];
             }
-            
-            return $sites_config;
+            return $sitesConfig;
         } else {
             return false;
         }
@@ -485,7 +665,7 @@ class UserInfo
     {
         $date = date('Y-m-d H:i:s', strtotime('-12 hours'));
         try {
-            $used_email_for_upd_query = $this->db->prepare("
+            $usedEmailForUpdQuery = $this->db->prepare("
                 SELECT
                     DISTINCT `mail`
                 FROM
@@ -494,15 +674,15 @@ class UserInfo
                     `site_id` is NULL
                 LIMIT 500
             ;");
-            $used_email_for_upd_query->bindValue(':dc', $dc);
-            $used_email_for_upd_query->execute();
+            $usedEmailForUpdQuery->bindValue(':dc', $dc);
+            $usedEmailForUpdQuery->execute();
         }
         catch (PDOException $e) {
             echo $e->getMessage();
             file_put_contents('../PDOErrors.txt', $e->getMessage(), FILE_APPEND);
         }
-        if ($used_email_for_upd_query->rowCount() > 0) {
-            while ($row = $used_email_for_upd_query->fetch()) {
+        if ($usedEmailForUpdQuery->rowCount() > 0) {
+            while ($row = $usedEmailForUpdQuery->fetch()) {
                 $users[] = $row['mail'];
             }
             return $users;
@@ -514,7 +694,7 @@ class UserInfo
     function getUsersForSyncDate($dc)
     {
         try {
-            $used_email_query = $this->db->prepare("
+            $usedEmailQuery = $this->db->prepare("
                 SELECT
                     `id`
                 FROM
@@ -524,15 +704,15 @@ class UserInfo
                 AND
                     `reg_time` = '0000-00-00 00:00:00'
             ;");
-            $used_email_query->bindValue(':dc', $dc);
-            $used_email_query->execute();
+            $usedEmailQuery->bindValue(':dc', $dc);
+            $usedEmailQuery->execute();
         }
         catch (PDOException $e) {
             echo $e->getMessage();
             file_put_contents('../PDOErrors.txt', $e->getMessage(), FILE_APPEND);
         }
-        if ($used_email_query->rowCount() > 0) {
-            while ($row = $used_email_query->fetch()) {
+        if ($usedEmailQuery->rowCount() > 0) {
+            while ($row = $usedEmailQuery->fetch()) {
                 $users[] = $row['id'];
             }
             return $users;
@@ -544,7 +724,7 @@ class UserInfo
     function getSiteList()
     {
         try {
-            $list_query = $this->db->prepare("
+            $listQuery = $this->db->prepare("
                 SELECT 
                     `sites_config`.`site_name` as site 
                 FROM 
@@ -560,9 +740,9 @@ class UserInfo
                 ORDER BY
                     site ASC;
             ;");
-            $list_query->execute();
+            $listQuery->execute();
             $list = array();
-            while ($row = $list_query->fetch()) {
+            while ($row = $listQuery->fetch()) {
                 $list[] = $row['site'];
             }
             return $list;
@@ -577,16 +757,16 @@ class UserInfo
     function getCreateriaList($createria)
     {
         try {
-            $list_query = $this->db->prepare("
+            $listQuery = $this->db->prepare("
                 SELECT 
                     DISTINCT $createria
                 FROM
                     `profile`
                 ORDER BY $createria ASC
             ;");
-            $list_query->execute();
+            $listQuery->execute();
             $list = array();
-            while ($row = $list_query->fetch()) {
+            while ($row = $listQuery->fetch()) {
                 $list[] = $row[$createria];
             }
             return $list;
@@ -598,16 +778,16 @@ class UserInfo
         }
     }
 
-    function syncDates($user_id, $site, $config)
+    function syncDates($userId, $site, $config)
     {
         $this->setDc($config);
         $this->adminLogin();
-        curl_setopt($this->ch, CURLOPT_URL, "https://www." . $this->main_site . ".com/profiles/search.php?pid=" . $user_id . "&site" . $this->site_conf[$site]['id']);
+        curl_setopt($this->ch, CURLOPT_URL, "https://www." . $this->mainSite . ".com/profiles/search.php?pid=" . $userId . "&site" . $this->site_conf[$site]['id']);
         curl_setopt($this->ch, CURLOPT_COOKIEJAR, 'cookie.txt');
         curl_setopt($this->ch, CURLOPT_COOKIEFILE, 'cookie.txt');
         curl_setopt($this->ch, CURLOPT_POST, true);
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($this->ch, CURLOPT_POSTFIELDS, "pid=" . $user_id . "&chk=&action=ajax_profile_details");
+        curl_setopt($this->ch, CURLOPT_POSTFIELDS, "pid=" . $userId . "&chk=&action=ajax_profile_details");
         curl_setopt($this->ch, CURLOPT_HTTPHEADER, array(
             'X-Requested-With: XMLHttpRequest'
         ));
@@ -615,33 +795,33 @@ class UserInfo
         curl_close($this->ch);
         $html     = new nokogiri($out);
         $elements = $html->get("tr")->toArray();
-        $reg_str = implode('|', $elements[2]['td'][2]['table'][0]['tr'][4]['td'][3]);
-        preg_match("/(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/i", $reg_str, $matches);
+        $regStr = implode('|', $elements[2]['td'][2]['table'][0]['tr'][4]['td'][3]);
+        preg_match("/(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/i", $regStr, $matches);
         $reg = $matches[0];
-        $conf_str = implode('|', $elements[2]['td'][2]['table'][0]['tr'][5]['td'][3]);
-        preg_match("/(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/i", $conf_str, $matches);
+        $confStr = implode('|', $elements[2]['td'][2]['table'][0]['tr'][5]['td'][3]);
+        preg_match("/(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/i", $confStr, $matches);
         $conf = $matches[0];
-        $traff_str = implode('|', $elements[2]['td'][2]['table'][0]['tr'][6]['td'][3]);
-        preg_match("/([\-a-zA-Z]*)/i", $traff_str, $matches);
+        $traffStr = implode('|', $elements[2]['td'][2]['table'][0]['tr'][6]['td'][3]);
+        preg_match("/([\-a-zA-Z]*)/i", $traffStr, $matches);
         $traff = $matches[0];
         try {
-            $dc_synced_update_query = $this->db->prepare("
+            $dcSyncedUpdateQuery = $this->db->prepare("
                 UPDATE 
                     `profile` 
                 SET 
-                    `reg_time` = :reg_time,
-                    `conf_time` = :conf_time, 
+                    `reg_time` = :regTime,
+                    `conf_time` = :confTime, 
                     `traffic` = :traffic,
                     `last_sync` = NOW()
                 WHERE 
                     `id` = :id
             ;");
-            $dc_synced_update_query->bindParam(':id', $user_id);
-            $dc_synced_update_query->bindParam(':reg_time', $reg);
-            $dc_synced_update_query->bindParam(':conf_time', $conf);
-            $dc_synced_update_query->bindParam(':traffic', $traff);
+            $dcSyncedUpdateQuery->bindParam(':id', $userId);
+            $dcSyncedUpdateQuery->bindParam(':regTime', $reg);
+            $dcSyncedUpdateQuery->bindParam(':confTime', $conf);
+            $dcSyncedUpdateQuery->bindParam(':traffic', $traff);
             
-            $dc_synced_update_query->execute();
+            $dcSyncedUpdateQuery->execute();
         }
         catch (PDOException $e) {
             echo $e->getMessage();
@@ -649,15 +829,15 @@ class UserInfo
         }
     }
 
-    function findByCreaterias($createrias, $sort_by, $sort, $page)
+    function findByCreaterias($createrias, $sortBy, $sort, $page)
     {
-        $createrias_text = $createrias;
-        $createrias_text .= " ORDER BY `" . $sort_by . "` " . $sort;
+        $createriasText = $createrias;
+        $createriasText .= "AND test IS NOT NULL ORDER BY `" . $sortBy . "` " . $sort;
         try {
             $count = 20;
-            $limit_to   = $page * $count;
-            $limit_from = $limit_to - $count;
-            $find_by_createria_count = $this->db->prepare("
+            $limitTo   = $page * $count;
+            $limitFrom = $limitTo - $count;
+            $findByCreateriaCount = $this->db->prepare("
                 SELECT
                     count(*)
                 FROM
@@ -666,11 +846,11 @@ class UserInfo
                     `sites_config`
                 ON
                     `profile`.`site_id` = `sites_config`.`site_id`
-                $createrias_text
+                $createriasText
             ;");
-            $find_by_createria_count->execute();
-            $count_result = $find_by_createria_count->fetch();
-            $find_by_createria_query = $this->db->prepare("
+            $findByCreateriaCount->execute();
+            $countResult = $findByCreateriaCount->fetch();
+            $findByCreateriaQuery = $this->db->prepare("
                 SELECT
                     `id`,
                     `mail`,
@@ -696,24 +876,24 @@ class UserInfo
                     `sites_config`
                 ON
                     `profile`.`site_id` = `sites_config`.`site_id`
-                $createrias_text
-                LIMIT $limit_from, $limit_to
+                $createriasText
+                LIMIT $limitFrom, $limitTo
             ;");
-            $find_by_createria_query->execute();
+            $findByCreateriaQuery->execute();
         }
         catch (PDOException $e) {
             echo $e->getMessage();
             file_put_contents('../PDOErrors.txt', $e->getMessage() . '\r\n', FILE_APPEND);
             return false;
         }
-        if ($find_by_createria_query->columnCount() > 0) {
+        if ($findByCreateriaQuery->columnCount() > 0) {
             $i = 0;
-            while ($row = $find_by_createria_query->fetch()) {
+            while ($row = $findByCreateriaQuery->fetch()) {
                 $answer['data'][$i]['site']        = $row['site'];
                 $answer['data'][$i]['gender']      = $row['gender'];
                 $answer['data'][$i]['country']     = $row['country'];
                 $answer['data'][$i]['key']         = $row['key'];
-                $answer['data'][$i]['reg_time']    = $row['reg_time'];
+                $answer['data'][$i]['regTime']     = $row['reg_time'];
                 $answer['data'][$i]['id']          = $row['id'];
                 $answer['data'][$i]['mail']        = $row['mail'];
                 $answer['data'][$i]['password']    = $row['password'];
@@ -726,12 +906,12 @@ class UserInfo
                 $answer['data'][$i]['active']      = $row['active'];
                 $answer['data'][$i]['platform']    = $row['platform'];
                 $answer['data'][$i]['ll']          = $row['ll'];
-                $answer['data'][$i]['site_id']     = $row['site_id'];
+                $answer['data'][$i]['siteId']     = $row['site_id'];
                 $i++;
             }
-            $answer['count']        = $count_result[0];
+            $answer['count']        = $countResult[0];
             $answer['sites']        = $sites;
-            $answer['sort_element'] = $sort_by;
+            $answer['sortElement'] = $sortBy;
             $answer['sort']         = $sort;
             return $answer;
         } else {
@@ -743,14 +923,14 @@ class UserInfo
     function syncDc($param)
     {
         try {
-            $dc_synced_delete_query_ph = $this->db->prepare("
+            $dcSyncedDeleteQueryPh = $this->db->prepare("
                 DELETE FROM 
                     `temp_profiles` 
                 WHERE 
-                    `email` = :curr_mail
+                    `email` = :currMail
             ;");
-            $dc_synced_delete_query_ph->bindParam(':curr_mail', $param);
-            $dc_synced_delete_query_ph->execute();
+            $dcSyncedDeleteQueryPh->bindParam(':currMail', $param);
+            $dcSyncedDeleteQueryPh->execute();
         }
         catch (PDOException $e) {
             echo $e->getMessage();
